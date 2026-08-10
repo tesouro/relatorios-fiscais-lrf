@@ -1,0 +1,279 @@
+---
+title: "RREO Tabela 2 - Pessoal por Elemento da Despesa"
+subtitle: "Material Suplementar - Documento Quarto Executável"
+lang: pt
+format:
+  html:
+    toc: true
+    code-fold: false
+    theme: flatly
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Sobre este documento
+
+Este é um documento **Quarto executável**: o mesmo arquivo que gera o relatório contém o código que produz os resultados. Faz parte de um **projeto experimental / piloto** de transparência fiscal.
+
+A intenção é explicar, passo a passo, **como a despesa de pessoal é aberta por tipo de despesa e separada entre Civil e Militar**, de forma que a área de contabilidade reconheça os critérios do Manual de Demonstrativos Fiscais (MDF-STN).
+
+Para reproduzir: instale [R](https://cran.r-project.org/) e [Quarto](https://quarto.org), coloque o arquivo de dados na mesma pasta e rode `quarto render rreo_t02_pessoal.qmd`.
+
+# O que este demonstrativo mostra
+
+A Tabela 2 do RREO detalha a **despesa com pessoal por elemento de despesa** (vencimentos, aposentadorias, pensões, obrigações patronais etc.), separando o **Pessoal Civil** do **Pessoal Militar**. É a "abertura" da folha de pagamento da União.
+
+A estrutura final é:
+
+- **Pessoal Civil** (vencimentos, outras despesas variáveis, aposentadoria, pensões, contribuições, obrigações patronais, outras aplicações)
+- **Pessoal Militar** (vencimentos, outras despesas variáveis, reformas, pensões, obrigações patronais, outras aplicações)
+- **Transferências Intergovernamentais**
+- **Total** = Civil + Militar + Transferências
+
+## O desafio da separação Civil × Militar
+
+A maioria dos itens já é identificada pelo próprio **elemento de despesa**: o elemento 11 é vencimento civil, o 12 é vencimento militar, e assim por diante. Mas alguns elementos são usados pelos dois grupos — por exemplo, "Aposentadoria" (civil) e "Reforma" (militar) compartilham o elemento 01.
+
+Para esses casos, a metodologia oficial separa pelo **órgão executor** (a Unidade Gestora que efetivamente executa o gasto): o **Ministério da Defesa** (órgão `52000`) concentra os militares. Há ainda uma sutileza: **civis lotados no Ministério da Defesa** (identificados pela ação de governo `0181`) devem contar como Civil, mesmo estando no órgão militar. É esse detalhe que faz a conta fechar.
+
+# Fonte de dados
+
+Os dados vêm do **Siga Brasil** (Senado Federal): <https://www12.senado.leg.br/orcamento/sigabrasil>
+
+**Arquivo:** `despesa_unificada.csv.gz`
+
+| Coluna no arquivo | Papel no cálculo |
+|---|---|
+| `GND (Cod) DESP` | Grupo 1 = Pessoal (é o único considerado aqui). |
+| `Elemento Despesa (Cod) DESP` | Identifica o tipo de despesa (vencimentos, aposentadoria, pensão etc.). |
+| `Ação (Cod) DESP` | A ação `0181` marca os civis lotados no Ministério da Defesa. |
+| `Órgão Superior (Cod)(UG) DESP` | Órgão executor. `52000` = Ministério da Defesa (bloco militar). |
+| `Empenhado (R$)` | Métrica da coluna "Execução" da Tabela 2 (empenhado = liquidado + Restos a Pagar inscritos). |
+
+> **Nota metodológica sobre o órgão.** A apuração oficial (via Tesouro Gerencial) separa pelo *órgão máximo* da Unidade Gestora executora. A base pública do Siga Brasil traz o *órgão superior* da UG — um nível hierárquico próximo, mas não idêntico. Os dois coincidem para a maioria dos órgãos, o que faz o total geral e quase toda a abertura baterem; há uma pequena diferença residual (~0,06%) na fronteira Civil/Militar de dois itens, comentada ao final.
+
+# Onde estão os dados (leia antes de executar)
+
+Este documento lê os arquivos de dados a partir da pasta `dados/` do repositório. Como o `.qmd` está em `standalones/`, o caminho padrão é **`../dados`** (a pasta `dados` que fica um nível acima).
+
+Se você renderizar o documento a partir da própria pasta `standalones/`, **não precisa mudar nada**. Se os seus arquivos estiverem em outro lugar, basta ajustar uma única linha no bloco de configuração abaixo — a variável `pasta_dados`. Exemplos:
+
+- Arquivos na mesma pasta do `.qmd`:  `pasta_dados <- "."`
+- Arquivos em `dados/` um nível acima (padrão):  `pasta_dados <- "../dados"`
+- Um caminho completo no seu computador:  `pasta_dados <- "C:/Users/voce/Desktop/dados"` (use barras normais `/`, mesmo no Windows)
+
+# Configuração inicial
+
+```{r}
+#| label: setup
+
+library(dplyr)
+library(knitr)
+
+# ---------------------------------------------------------------------------
+# CAMINHO DAS BASES DE DADOS  <-- ajuste aqui se necessário (veja seção acima)
+# ---------------------------------------------------------------------------
+pasta_dados <- "../dados"
+
+# Monta o caminho completo de um arquivo dentro da pasta de dados.
+# Ex.: caminho_dado("despesa_unificada.csv.gz") -> "../dados/despesa_unificada.csv.gz"
+caminho_dado <- function(arquivo) file.path(pasta_dados, arquivo)
+
+ler_csv_gz <- function(caminho) {
+  df <- read.csv(gzfile(caminho), check.names = FALSE, stringsAsFactors = FALSE)
+  Encoding(names(df)) <- "UTF-8"
+  df
+}
+
+# Seleciona uma coluna pelo NOME. Normaliza acentos, espaços extras e
+# caracteres invisíveis (BOM) que costumam vir no cabeçalho exportado — assim
+# a leitura é legível e ao mesmo tempo tolerante a variações do arquivo.
+# Se o nome não existir, para com mensagem clara em vez de somar a coluna errada.
+coluna <- function(dados, nome) {
+  normalizar <- function(x) {
+    x <- iconv(x, to = "ASCII//TRANSLIT")
+    tolower(trimws(gsub("[^A-Za-z0-9]+", " ", x)))
+  }
+  i <- match(normalizar(nome), normalizar(names(dados)))
+  if (is.na(i)) {
+    stop("Coluna nao encontrada no arquivo: '", nome, "'.\nColunas disponiveis: ",
+         paste(names(dados), collapse = " | "), call. = FALSE)
+  }
+  dados[[i]]
+}
+
+em_mil <- function(reais) {
+  format(round(reais / 1000), big.mark = ".", decimal.mark = ",", scientific = FALSE)
+}
+```
+
+# Passo 1 — Carregar a base de pessoal
+
+Ficamos apenas com o grupo 1 (Pessoal) e preparamos os marcadores que vamos usar para separar Civil de Militar.
+
+```{r}
+#| label: carregar
+
+despesa <- ler_csv_gz(caminho_dado("despesa_unificada.csv.gz"))
+
+d <- data.frame(
+  grupo     = as.character(coluna(despesa, "GND (Cod) DESP")),
+  elemento  = as.character(coluna(despesa, "Elemento Despesa (Cod) DESP")),
+  acao      = as.character(coluna(despesa, "Ação (Cod) DESP")),
+  orgao     = as.character(coluna(despesa, "Órgão Superior (Cod)(UG) DESP")),
+  empenhado = as.numeric(coluna(despesa, "Empenhado (R$)")),
+  stringsAsFactors = FALSE
+)
+
+# Só o grupo Pessoal (1)
+d <- d[d$grupo == "1", ]
+
+# --- Marcadores para separar Civil x Militar ---
+MINISTERIO_DEFESA <- "52000"
+ACAO_CIVIS_NA_DEFESA <- "0181"
+
+# "É Ministério da Defesa?" e as duas situações dentro dele:
+eh_defesa       <- d$orgao == MINISTERIO_DEFESA
+eh_civil_defesa <- eh_defesa & d$acao == ACAO_CIVIS_NA_DEFESA   # civis lotados no MD
+eh_militar      <- eh_defesa & d$acao != ACAO_CIVIS_NA_DEFESA   # militares de fato
+nao_eh_defesa   <- !eh_defesa
+
+# Atalho: soma o empenhado das linhas que satisfazem uma condição
+somar_se <- function(condicao) sum(d$empenhado[condicao], na.rm = TRUE)
+
+cat("Linhas de pessoal (grupo 1):", nrow(d), "\n")
+```
+
+# Passo 2 — Pessoal Civil
+
+Cada item abaixo é uma linha da parte Civil da Tabela 2. Os itens que compartilham elemento com o Militar (Aposentadoria e Pensões) usam a regra: *não é Defesa, OU é civil lotado na Defesa (ação 0181)*.
+
+```{r}
+#| label: civil
+
+civil_vencimentos   <- somar_se(d$elemento == "11")
+civil_outras_var    <- somar_se(d$elemento == "16")
+civil_aposentadoria <- somar_se(d$elemento == "01" & (nao_eh_defesa | eh_civil_defesa))
+civil_pensoes       <- somar_se(d$elemento == "03" & (nao_eh_defesa | eh_civil_defesa))
+civil_contribuicoes <- somar_se(d$elemento == "07" & nao_eh_defesa)
+civil_obrigacoes    <- somar_se(d$elemento == "13" & nao_eh_defesa)
+
+# "Outras Aplicações" Civil = elementos não nomeados acima, no lado civil.
+# Inclui os civis lotados na Defesa (exceto o que já foi para aposentadoria/pensão).
+elementos_civil_nomeados <- c("00","01","03","07","11","12","13","16","17","41")
+civil_outras_aplic <- somar_se(
+  (!d$elemento %in% c("00","01","03") & eh_civil_defesa) |
+  (!d$elemento %in% elementos_civil_nomeados & nao_eh_defesa)
+)
+
+total_civil <- civil_vencimentos + civil_outras_var + civil_aposentadoria +
+               civil_pensoes + civil_contribuicoes + civil_obrigacoes + civil_outras_aplic
+
+cat("= Total Pessoal Civil:  R$", em_mil(total_civil), "mil\n")
+```
+
+# Passo 3 — Pessoal Militar
+
+A parte militar é o Ministério da Defesa, **menos** os civis lotados nele (que já foram contados no Civil). Por isso "Outras Aplicações" tem uma parcela positiva (todo o MD) da qual se deduz a parcela civil.
+
+```{r}
+#| label: militar
+
+militar_vencimentos <- somar_se(d$elemento == "12")
+militar_outras_var  <- somar_se(d$elemento == "17")
+militar_reformas    <- somar_se(d$elemento == "01" & eh_militar)
+militar_pensoes     <- somar_se(d$elemento == "03" & eh_militar)
+militar_obrigacoes  <- somar_se(d$elemento == "13" & eh_defesa)  # elem 13 de todo o MD
+
+# Outras Aplicações Militar = residual de TODO o MD, menos a parcela civil no MD
+elementos_militar_excluir     <- c("00","01","03","11","12","13","16","17","41")
+elementos_deducao_civil_excl  <- c("00","01","03","11")
+
+militar_outras_bruto <- somar_se(!d$elemento %in% elementos_militar_excluir & eh_defesa)
+deducao_civis_no_md  <- somar_se(!d$elemento %in% elementos_deducao_civil_excl & eh_civil_defesa)
+militar_outras_aplic <- militar_outras_bruto - deducao_civis_no_md
+
+total_militar <- militar_vencimentos + militar_outras_var + militar_reformas +
+                 militar_pensoes + militar_obrigacoes + militar_outras_aplic
+
+cat("= Total Pessoal Militar:  R$", em_mil(total_militar), "mil\n")
+```
+
+# Passo 4 — Transferências e Total
+
+```{r}
+#| label: transferencias-total
+
+transferencias <- somar_se(d$elemento == "41")
+
+total_geral <- total_civil + total_militar + transferencias
+
+cat("Transferências:  R$", em_mil(transferencias), "mil\n")
+cat("= TOTAL EXECUÇÃO:  R$", em_mil(total_geral), "mil\n")
+```
+
+# Demonstrativo completo e validação
+
+```{r}
+#| label: demonstrativo-final
+
+demonstrativo <- data.frame(
+  Item = c(
+    "Civil — Vencimentos e Vantagens Fixas",
+    "Civil — Outras Despesas Variáveis",
+    "Civil — Aposentadoria",
+    "Civil — Pensões",
+    "Civil — Contribuições a Entidades Fechadas de Previdência",
+    "Civil — Obrigações Patronais",
+    "Civil — Outras Aplicações",
+    "= Total Pessoal Civil",
+    "Militar — Vencimentos e Vantagens Fixas",
+    "Militar — Outras Despesas Variáveis",
+    "Militar — Reformas",
+    "Militar — Pensões",
+    "Militar — Obrigações Patronais",
+    "Militar — Outras Aplicações",
+    "= Total Pessoal Militar",
+    "Transferências Intergovernamentais",
+    "= TOTAL EXECUÇÃO"
+  ),
+  `R$ mil` = c(
+    em_mil(civil_vencimentos), em_mil(civil_outras_var), em_mil(civil_aposentadoria),
+    em_mil(civil_pensoes), em_mil(civil_contribuicoes), em_mil(civil_obrigacoes),
+    em_mil(civil_outras_aplic), em_mil(total_civil),
+    em_mil(militar_vencimentos), em_mil(militar_outras_var), em_mil(militar_reformas),
+    em_mil(militar_pensoes), em_mil(militar_obrigacoes), em_mil(militar_outras_aplic),
+    em_mil(total_militar),
+    em_mil(transferencias), em_mil(total_geral)
+  ),
+  check.names = FALSE
+)
+
+kable(demonstrativo, align = c("l", "r"))
+```
+
+```{r}
+#| label: validacao
+
+oficial_mil <- 431651482   # Total execução — DOU (Dez/2025)
+nosso_mil   <- round(total_geral / 1000)
+diferenca   <- nosso_mil - oficial_mil
+
+cat("Nosso total:  R$", format(nosso_mil,   big.mark=".", decimal.mark=","), "mil\n")
+cat("Oficial:  R$",     format(oficial_mil, big.mark=".", decimal.mark=","), "mil\n")
+cat("Diferença:  R$",   format(diferenca,   big.mark=".", decimal.mark=","), "mil\n\n")
+
+if (abs(diferenca) <= 10) {
+  cat("VALIDADO: bate com o Diário Oficial (diferença de", diferenca, "mil, nível de arredondamento).\n")
+} else {
+  cat("Diferença encontrada — investigar.\n")
+}
+```
+
+# Conclusão
+
+A abertura da despesa de pessoal por elemento, separada entre Civil e Militar, foi reproduzida a partir de dados **exclusivamente públicos**. O total geral coincide com o valor oficial, e a separação Civil/Militar — inclusive o tratamento especial dos civis lotados no Ministério da Defesa — segue a metodologia do MDF-STN.
+
+Resta uma pequena diferença (~0,06%) na fronteira Civil/Militar de dois itens (Obrigações Patronais e Contribuições), porque a apuração oficial usa o *órgão máximo* da UG executora, enquanto a base pública do Siga Brasil expõe o *órgão superior* — níveis hierárquicos próximos, mas não idênticos. Essa diferença não afeta o total geral e está documentada com transparência, exatamente no espírito do *literate programming*: onde o dado público esbarra numa distinção do sistema interno, isso é dito de forma explícita, não escondido.

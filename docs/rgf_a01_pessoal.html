@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt" xml:lang="pt"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>RGF Anexo 1 - Despesa com Pessoal (Consolidado)</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="rgf_a01_pessoal_files/libs/clipboard/clipboard.min.js"></script>
+<script src="rgf_a01_pessoal_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="rgf_a01_pessoal_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="rgf_a01_pessoal_files/libs/quarto-html/popper.min.js"></script>
+<script src="rgf_a01_pessoal_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="rgf_a01_pessoal_files/libs/quarto-html/anchor.min.js"></script>
+<link href="rgf_a01_pessoal_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="rgf_a01_pessoal_files/libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="rgf_a01_pessoal_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="rgf_a01_pessoal_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="rgf_a01_pessoal_files/libs/bootstrap/bootstrap-293cc809d15782442e9b1098eedb6797.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Índice</h2>
+   
+  <ul>
+  <li><a href="#sobre-este-documento" id="toc-sobre-este-documento" class="nav-link active" data-scroll-target="#sobre-este-documento">Sobre este documento</a></li>
+  <li><a href="#o-que-este-demonstrativo-mede" id="toc-o-que-este-demonstrativo-mede" class="nav-link" data-scroll-target="#o-que-este-demonstrativo-mede">O que este demonstrativo mede</a></li>
+  <li><a href="#fonte-de-dados" id="toc-fonte-de-dados" class="nav-link" data-scroll-target="#fonte-de-dados">Fonte de dados</a></li>
+  <li><a href="#onde-estão-os-dados-leia-antes-de-executar" id="toc-onde-estão-os-dados-leia-antes-de-executar" class="nav-link" data-scroll-target="#onde-estão-os-dados-leia-antes-de-executar">Onde estão os dados (leia antes de executar)</a></li>
+  <li><a href="#configuração-inicial" id="toc-configuração-inicial" class="nav-link" data-scroll-target="#configuração-inicial">Configuração inicial</a></li>
+  <li><a href="#listas-de-referência-critérios-do-mdf-stn" id="toc-listas-de-referência-critérios-do-mdf-stn" class="nav-link" data-scroll-target="#listas-de-referência-critérios-do-mdf-stn">Listas de referência (critérios do MDF-STN)</a></li>
+  <li><a href="#passo-1-carregar-e-preparar-a-base" id="toc-passo-1-carregar-e-preparar-a-base" class="nav-link" data-scroll-target="#passo-1-carregar-e-preparar-a-base">Passo 1 — Carregar e preparar a base</a></li>
+  <li><a href="#passo-2-despesa-bruta-com-pessoal-i" id="toc-passo-2-despesa-bruta-com-pessoal-i" class="nav-link" data-scroll-target="#passo-2-despesa-bruta-com-pessoal-i">Passo 2 — Despesa Bruta com Pessoal (I)</a>
+  <ul class="collapse">
+  <li><a href="#vencimentos-e-vantagens" id="toc-vencimentos-e-vantagens" class="nav-link" data-scroll-target="#vencimentos-e-vantagens">11 — Vencimentos e Vantagens</a></li>
+  <li><a href="#obrigações-patronais" id="toc-obrigações-patronais" class="nav-link" data-scroll-target="#obrigações-patronais">12 — Obrigações Patronais</a></li>
+  <li><a href="#aposentadorias-e-reformas" id="toc-aposentadorias-e-reformas" class="nav-link" data-scroll-target="#aposentadorias-e-reformas">13 — Aposentadorias e Reformas</a></li>
+  <li><a href="#pensões" id="toc-pensões" class="nav-link" data-scroll-target="#pensões">14 — Pensões</a></li>
+  <li><a href="#terceirização-substituição-de-mão-de-obra" id="toc-terceirização-substituição-de-mão-de-obra" class="nav-link" data-scroll-target="#terceirização-substituição-de-mão-de-obra">16 — Terceirização (substituição de mão de obra)</a></li>
+  <li><a href="#soma-da-despesa-bruta-i" id="toc-soma-da-despesa-bruta-i" class="nav-link" data-scroll-target="#soma-da-despesa-bruta-i">Soma da Despesa Bruta (I)</a></li>
+  </ul></li>
+  <li><a href="#passo-3-despesas-não-computadas-ii" id="toc-passo-3-despesas-não-computadas-ii" class="nav-link" data-scroll-target="#passo-3-despesas-não-computadas-ii">Passo 3 — Despesas Não Computadas (II)</a></li>
+  <li><a href="#passo-4-despesa-líquida-com-pessoal-iii" id="toc-passo-4-despesa-líquida-com-pessoal-iii" class="nav-link" data-scroll-target="#passo-4-despesa-líquida-com-pessoal-iii">Passo 4 — Despesa Líquida com Pessoal (III)</a></li>
+  <li><a href="#demonstrativo-completo-e-validação" id="toc-demonstrativo-completo-e-validação" class="nav-link" data-scroll-target="#demonstrativo-completo-e-validação">Demonstrativo completo e validação</a></li>
+  <li><a href="#conclusão" id="toc-conclusão" class="nav-link" data-scroll-target="#conclusão">Conclusão</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">RGF Anexo 1 - Despesa com Pessoal (Consolidado)</h1>
+<p class="subtitle lead">Material Suplementar - Documento Quarto Executável</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="sobre-este-documento" class="level1">
+<h1>Sobre este documento</h1>
+<p>Este é um documento <strong>Quarto executável</strong>: o mesmo arquivo que gera o relatório contém o código que produz os resultados. Faz parte de um <strong>projeto experimental / piloto</strong> de transparência fiscal.</p>
+<p>A Despesa com Pessoal é um dos cálculos mais detalhados da Lei de Responsabilidade Fiscal, com várias regras de inclusão e exclusão. A intenção deste documento é <strong>abrir cada regra</strong> e explicá-la em linguagem natural, para que a área de contabilidade reconheça os critérios do Manual de Demonstrativos Fiscais (MDF-STN) e do art. 19–20 da LRF.</p>
+<p>Para reproduzir: instale <a href="https://cran.r-project.org/">R</a> e <a href="https://quarto.org">Quarto</a>, coloque o arquivo de dados na mesma pasta e rode <code>quarto render rgf_a01_pessoal.qmd</code>.</p>
+</section>
+<section id="o-que-este-demonstrativo-mede" class="level1">
+<h1>O que este demonstrativo mede</h1>
+<p>O RGF Anexo 1 apura a <strong>Despesa Total com Pessoal (DTP)</strong> — a base para verificar se a União respeita o limite da LRF (que é um percentual da RCL). A lógica geral é:</p>
+<blockquote class="blockquote">
+<p><strong>DTP Líquida = Despesa Bruta com Pessoal − Despesas Não Computadas</strong></p>
+</blockquote>
+<p>Ou seja: somamos tudo que é pessoal (vencimentos, encargos, aposentadorias, pensões, terceirização) e depois <strong>subtraímos as parcelas que a própria LRF permite excluir</strong> do limite (como certas aposentadorias custeadas por fontes específicas). O resultado — a DTP Líquida — é o número que se compara ao teto legal.</p>
+<p>Este cálculo é <strong>consolidado</strong> (soma dos três Poderes). A abertura por Poder depende de uma segmentação institucional que a base pública do Siga Brasil não fornece; por isso trabalhamos com o total consolidado, que valida exatamente.</p>
+</section>
+<section id="fonte-de-dados" class="level1">
+<h1>Fonte de dados</h1>
+<p>Os dados vêm do <strong>Siga Brasil</strong> (Senado Federal): <a href="https://www12.senado.leg.br/orcamento/sigabrasil" class="uri">https://www12.senado.leg.br/orcamento/sigabrasil</a></p>
+<p><strong>Arquivo:</strong> <code>despesa_unificada.csv.gz</code></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Coluna no arquivo</th>
+<th>Papel no cálculo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>GND (Cod) DESP</code></td>
+<td>Grupo de Natureza da Despesa. Grupo 1 = Pessoal; grupo 3 = Outras Despesas Correntes (entra só para a terceirização).</td>
+</tr>
+<tr class="even">
+<td><code>Elemento Despesa (Cod) DESP</code></td>
+<td>Distingue vencimentos (11), obrigações (13), aposentadorias (01), pensões (03), terceirização (34) etc.</td>
+</tr>
+<tr class="odd">
+<td><code>Sub-elemento Despesa (Cod) DESP</code></td>
+<td>Detalhe de 8 dígitos (a “natureza detalhada”). Usado para capturar exceções específicas.</td>
+</tr>
+<tr class="even">
+<td><code>Sub-elemento Despesa DESP</code></td>
+<td>Nome do sub-elemento — usado para identificar aposentadorias/pensões por palavras-chave.</td>
+</tr>
+<tr class="odd">
+<td><code>Modalidade Aplicação (Cod) DESP</code></td>
+<td>90 = aplicação direta; 91 = intra-orçamentária. Separa casos de obrigações patronais.</td>
+</tr>
+<tr class="even">
+<td><code>Fonte (Cod) DESP</code></td>
+<td>Identifica as fontes de recursos que permitem a exclusão de aposentadorias do limite.</td>
+</tr>
+<tr class="odd">
+<td><code>Liquidado (R$)</code></td>
+<td>O RGF usa a despesa <strong>liquidada</strong> como métrica.</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="onde-estão-os-dados-leia-antes-de-executar" class="level1">
+<h1>Onde estão os dados (leia antes de executar)</h1>
+<p>Este documento lê os arquivos de dados a partir da pasta <code>dados/</code> do repositório. Como o <code>.qmd</code> está em <code>standalones/</code>, o caminho padrão é <strong><code>../dados</code></strong> (a pasta <code>dados</code> que fica um nível acima).</p>
+<p>Se você renderizar o documento a partir da própria pasta <code>standalones/</code>, <strong>não precisa mudar nada</strong>. Se os seus arquivos estiverem em outro lugar, basta ajustar uma única linha no bloco de configuração abaixo — a variável <code>pasta_dados</code>. Exemplos:</p>
+<ul>
+<li>Arquivos na mesma pasta do <code>.qmd</code>: <code>pasta_dados &lt;- "."</code></li>
+<li>Arquivos em <code>dados/</code> um nível acima (padrão): <code>pasta_dados &lt;- "../dados"</code></li>
+<li>Um caminho completo no seu computador: <code>pasta_dados &lt;- "C:/Users/voce/Desktop/dados"</code> (use barras normais <code>/</code>, mesmo no Windows)</li>
+</ul>
+</section>
+<section id="configuração-inicial" class="level1">
+<h1>Configuração inicial</h1>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># ---------------------------------------------------------------------------</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># CAMINHO DAS BASES DE DADOS  &lt;-- ajuste aqui se necessário (veja seção acima)</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># ---------------------------------------------------------------------------</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>pasta_dados <span class="ot">&lt;-</span> <span class="st">"../dados"</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Monta o caminho completo de um arquivo dentro da pasta de dados.</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Ex.: caminho_dado("despesa_unificada.csv.gz") -&gt; "../dados/despesa_unificada.csv.gz"</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>caminho_dado <span class="ot">&lt;-</span> <span class="cf">function</span>(arquivo) <span class="fu">file.path</span>(pasta_dados, arquivo)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>ler_csv_gz <span class="ot">&lt;-</span> <span class="cf">function</span>(caminho) {</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">gzfile</span>(caminho), <span class="at">check.names =</span> <span class="cn">FALSE</span>, <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Encoding</span>(<span class="fu">names</span>(df)) <span class="ot">&lt;-</span> <span class="st">"UTF-8"</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  df</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Seleciona uma coluna pelo NOME. Normaliza acentos, espaços extras e</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># caracteres invisíveis (BOM) que costumam vir no cabeçalho exportado — assim</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># a leitura é legível e ao mesmo tempo tolerante a variações do arquivo.</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Se o nome não existir, para com mensagem clara em vez de somar a coluna errada.</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>coluna <span class="ot">&lt;-</span> <span class="cf">function</span>(dados, nome) {</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  normalizar <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> <span class="fu">iconv</span>(x, <span class="at">to =</span> <span class="st">"ASCII//TRANSLIT"</span>)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tolower</span>(<span class="fu">trimws</span>(<span class="fu">gsub</span>(<span class="st">"[^A-Za-z0-9]+"</span>, <span class="st">" "</span>, x)))</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  i <span class="ot">&lt;-</span> <span class="fu">match</span>(<span class="fu">normalizar</span>(nome), <span class="fu">normalizar</span>(<span class="fu">names</span>(dados)))</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(i)) {</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"Coluna nao encontrada no arquivo: '"</span>, nome, <span class="st">"'.</span><span class="sc">\n</span><span class="st">Colunas disponiveis: "</span>,</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>         <span class="fu">paste</span>(<span class="fu">names</span>(dados), <span class="at">collapse =</span> <span class="st">" | "</span>), <span class="at">call. =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  dados[[i]]</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>em_mil <span class="ot">&lt;-</span> <span class="cf">function</span>(reais) {</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">format</span>(<span class="fu">round</span>(reais <span class="sc">/</span> <span class="dv">1000</span>), <span class="at">big.mark =</span> <span class="st">"."</span>, <span class="at">decimal.mark =</span> <span class="st">","</span>, <span class="at">scientific =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="co"># A "fonte" vem com 4 dígitos; comparamos pelos 3 últimos.</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>fonte_3digitos <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">str_sub</span>(<span class="fu">str_pad</span>(<span class="fu">as.character</span>(x), <span class="dv">4</span>, <span class="at">pad =</span> <span class="st">"0"</span>), <span class="sc">-</span><span class="dv">3</span>, <span class="sc">-</span><span class="dv">1</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="listas-de-referência-critérios-do-mdf-stn" class="level1">
+<h1>Listas de referência (critérios do MDF-STN)</h1>
+<p>Antes de calcular, definimos as listas de códigos que o Manual de Demonstrativos Fiscais estabelece. Nomeamos cada uma para deixar claro o que representa.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sub-elementos "ressalvados": despesas que, apesar de estarem no grupo Pessoal,</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># NÃO compõem a despesa com pessoal (ex.: sentenças, indenizações específicas).</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># São removidas logo na entrada.</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>ndds_ressalvadas <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"31900503"</span>,<span class="st">"31900504"</span>,<span class="st">"31900505"</span>,<span class="st">"31900506"</span>,<span class="st">"31900507"</span>,<span class="st">"31900508"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"31900501"</span>,<span class="st">"31900502"</span>,<span class="st">"31900402"</span>,<span class="st">"31900421"</span>,<span class="st">"31900819"</span>,<span class="st">"31900901"</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"31900902"</span>,<span class="st">"31900903"</span>,<span class="st">"31900904"</span>,<span class="st">"31900905"</span>,<span class="st">"31900906"</span>,<span class="st">"31909209"</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"31900809"</span>,<span class="st">"31900810"</span>,<span class="st">"31900811"</span>,<span class="st">"31900812"</span>,<span class="st">"31900815"</span>,<span class="st">"31900816"</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Naturezas de OBRIGAÇÕES PATRONAIS (encargos do empregador)</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>nat_obrigacoes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"31909213"</span>,<span class="st">"31919213"</span>,<span class="st">"31909207"</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Naturezas de APOSENTADORIA (além do elemento 01)</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>nat_aposentadoria <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"31901702"</span>,<span class="st">"31909109"</span>,<span class="st">"31909112"</span>,<span class="st">"31909115"</span>,<span class="st">"31909118"</span>,<span class="st">"31909123"</span>,</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"31909124"</span>,<span class="st">"31909128"</span>,<span class="st">"31909129"</span>,<span class="st">"31909201"</span>,<span class="st">"31909403"</span>,<span class="st">"31909404"</span>,<span class="st">"31909414"</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Naturezas de PENSÕES (além do elemento 03)</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>nat_pensoes <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="st">"31909110"</span>,<span class="st">"31909113"</span>,<span class="st">"31909116"</span>,<span class="st">"31909119"</span>,<span class="st">"31909131"</span>,<span class="st">"31909136"</span>,</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="st">"31909137"</span>,<span class="st">"31909130"</span>,<span class="st">"31909203"</span>,<span class="st">"31909220"</span>,<span class="st">"31909221"</span>,<span class="st">"31909406"</span>,<span class="st">"31909413"</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>elem_obrigacoes  <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"13"</span>,<span class="st">"07"</span>)                       <span class="co"># elementos de obrigações patronais</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>elem_apos_pens   <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"01"</span>,<span class="st">"03"</span>)                       <span class="co"># aposentadoria e pensão</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>elem_diversos_inat <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"05"</span>,<span class="st">"08"</span>,<span class="st">"09"</span>,<span class="st">"17"</span>,<span class="st">"91"</span>,<span class="st">"92"</span>,<span class="st">"94"</span>)  <span class="co"># elementos que podem conter inativos</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Fontes que permitem EXCLUIR aposentadorias/pensões do limite (art. 19 LRF)</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>fontes_exclusao <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"023"</span>,<span class="st">"024"</span>,<span class="st">"055"</span>,<span class="st">"056"</span>)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Palavras que identificam despesa de inativos no nome do sub-elemento</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>padrao_inativos <span class="ot">&lt;-</span> <span class="st">"</span><span class="sc">\\</span><span class="st">bAPOSENT|</span><span class="sc">\\</span><span class="st">bINAT|</span><span class="sc">\\</span><span class="st">bREFORMA|</span><span class="sc">\\</span><span class="st">bPENS|LEI 7</span><span class="sc">\\</span><span class="st">.963/1989"</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="passo-1-carregar-e-preparar-a-base" class="level1">
+<h1>Passo 1 — Carregar e preparar a base</h1>
+<p>Ficamos apenas com os grupos relevantes (1 = Pessoal e 3 = Outras Despesas Correntes, este só para terceirização) e removemos, de saída, os sub-elementos ressalvados.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>despesa <span class="ot">&lt;-</span> <span class="fu">ler_csv_gz</span>(<span class="fu">caminho_dado</span>(<span class="st">"despesa_unificada.csv.gz"</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">grupo      =</span> <span class="fu">as.character</span>(<span class="fu">coluna</span>(despesa, <span class="st">"GND (Cod) DESP"</span>)),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">elemento   =</span> <span class="fu">as.character</span>(<span class="fu">coluna</span>(despesa, <span class="st">"Elemento Despesa (Cod) DESP"</span>)),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">subelem    =</span> <span class="fu">as.character</span>(<span class="fu">coluna</span>(despesa, <span class="st">"Sub-elemento Despesa (Cod) DESP"</span>)),</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">subnome    =</span> <span class="fu">as.character</span>(<span class="fu">coluna</span>(despesa, <span class="st">"Sub-elemento Despesa DESP"</span>)),</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">modalidade =</span> <span class="fu">as.character</span>(<span class="fu">coluna</span>(despesa, <span class="st">"Modalidade Aplicação (Cod) DESP"</span>)),</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">fonte      =</span> <span class="fu">fonte_3digitos</span>(<span class="fu">coluna</span>(despesa, <span class="st">"Fonte (Cod) DESP"</span>)),</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">liquidado  =</span> <span class="fu">as.numeric</span>(<span class="fu">coluna</span>(despesa, <span class="st">"Liquidado (R$)"</span>)),</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove os sub-elementos ressalvados e mantém só grupos 1 e 3</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> d[<span class="sc">!</span>d<span class="sc">$</span>subelem <span class="sc">%in%</span> ndds_ressalvadas <span class="sc">&amp;</span> d<span class="sc">$</span>grupo <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"1"</span>,<span class="st">"3"</span>), ]</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Atalho: soma o "liquidado" das linhas que satisfazem uma condição</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>somar_se <span class="ot">&lt;-</span> <span class="cf">function</span>(condicao) <span class="fu">sum</span>(d<span class="sc">$</span>liquidado[condicao], <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Linhas de despesa consideradas:"</span>, <span class="fu">nrow</span>(d), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Linhas de despesa consideradas: 100587 </code></pre>
+</div>
+</div>
+</section>
+<section id="passo-2-despesa-bruta-com-pessoal-i" class="level1">
+<h1>Passo 2 — Despesa Bruta com Pessoal (I)</h1>
+<p>A despesa bruta soma cinco componentes. Cada um é uma linha do demonstrativo.</p>
+<section id="vencimentos-e-vantagens" class="level2">
+<h2 class="anchored" data-anchor-id="vencimentos-e-vantagens">11 — Vencimentos e Vantagens</h2>
+<p>É o “corpo” da folha: tudo do grupo Pessoal que <strong>não</strong> seja aposentadoria/pensão (01, 03), terceirização (34) ou benefício assistencial (86), e que <strong>não</strong> caia em uma série de exceções específicas (obrigações patronais destacadas, ressalvas de natureza <code>0599</code>, nomes de inativos, etc.). Essas exclusões evitam contar duas vezes o que será somado em outras linhas.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Exclusão A: obrigações patronais que serão contadas na linha 12</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>exclusao_obrig <span class="ot">&lt;-</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  (<span class="fu">substr</span>(d<span class="sc">$</span>subelem,<span class="dv">1</span>,<span class="dv">1</span>)<span class="sc">==</span><span class="st">"3"</span> <span class="sc">&amp;</span> d<span class="sc">$</span>elemento<span class="sc">==</span><span class="st">"92"</span> <span class="sc">&amp;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>     ((d<span class="sc">$</span>modalidade<span class="sc">==</span><span class="st">"90"</span> <span class="sc">&amp;</span> d<span class="sc">$</span>subelem <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"31909213"</span>,<span class="st">"31909207"</span>)) <span class="sc">|</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>      (d<span class="sc">$</span>modalidade<span class="sc">==</span><span class="st">"91"</span> <span class="sc">&amp;</span> d<span class="sc">$</span>subelem<span class="sc">==</span><span class="st">"31919213"</span>))) <span class="sc">|</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  d<span class="sc">$</span>elemento <span class="sc">%in%</span> elem_obrigacoes</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Exclusão B: ressalvas específicas de natureza (0599 e um subelemento 92 especial)</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>exclusao_ressalva <span class="ot">&lt;-</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  (<span class="fu">substr</span>(d<span class="sc">$</span>subelem,<span class="dv">1</span>,<span class="dv">1</span>)<span class="sc">==</span><span class="st">"3"</span> <span class="sc">&amp;</span> d<span class="sc">$</span>elemento<span class="sc">==</span><span class="st">"92"</span> <span class="sc">&amp;</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>     d<span class="sc">$</span>subelem<span class="sc">==</span><span class="st">"31909205"</span> <span class="sc">&amp;</span> d<span class="sc">$</span>modalidade <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"90"</span>,<span class="st">"91"</span>)) <span class="sc">|</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_detect</span>(d<span class="sc">$</span>subelem, <span class="st">"0599"</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Exclusão C: qualquer despesa cujo NOME indique inativos (vai para 13/14)</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>exclusao_inativos <span class="ot">&lt;-</span> <span class="fu">str_detect</span>(d<span class="sc">$</span>subnome, padrao_inativos)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Exclusão D: elemento 05 com sub-elementos de inativos</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>exclusao_elem05 <span class="ot">&lt;-</span> d<span class="sc">$</span>elemento<span class="sc">==</span><span class="st">"05"</span> <span class="sc">&amp;</span> <span class="fu">str_detect</span>(d<span class="sc">$</span>subelem, <span class="st">"0505|0506|0507|0508"</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>c11 <span class="ot">&lt;-</span> d<span class="sc">$</span>grupo<span class="sc">==</span><span class="st">"1"</span> <span class="sc">&amp;</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="sc">!</span>d<span class="sc">$</span>elemento <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"01"</span>,<span class="st">"03"</span>,<span class="st">"34"</span>,<span class="st">"86"</span>) <span class="sc">&amp;</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  <span class="sc">!</span>exclusao_obrig <span class="sc">&amp;</span> <span class="sc">!</span>exclusao_ressalva <span class="sc">&amp;</span> <span class="sc">!</span>exclusao_inativos <span class="sc">&amp;</span> <span class="sc">!</span>exclusao_elem05</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>vencimentos <span class="ot">&lt;-</span> <span class="fu">somar_se</span>(c11)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"11 Vencimentos e Vantagens:  R$"</span>, <span class="fu">em_mil</span>(vencimentos), <span class="st">"mil</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>11 Vencimentos e Vantagens:  R$ 210.390.865 mil</code></pre>
+</div>
+</div>
+</section>
+<section id="obrigações-patronais" class="level2">
+<h2 class="anchored" data-anchor-id="obrigações-patronais">12 — Obrigações Patronais</h2>
+<p>Os encargos que o empregador (a União) paga sobre a folha — identificados pelos elementos de obrigações (13, 07) ou pelas naturezas específicas de obrigação patronal.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>c12 <span class="ot">&lt;-</span> (d<span class="sc">$</span>grupo<span class="sc">==</span><span class="st">"1"</span> <span class="sc">&amp;</span> d<span class="sc">$</span>elemento <span class="sc">%in%</span> elem_obrigacoes) <span class="sc">|</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>        d<span class="sc">$</span>subelem <span class="sc">%in%</span> nat_obrigacoes</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>obrigacoes <span class="ot">&lt;-</span> <span class="fu">somar_se</span>(c12)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"12 Obrigações Patronais:  R$"</span>, <span class="fu">em_mil</span>(obrigacoes), <span class="st">"mil</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>12 Obrigações Patronais:  R$ 33.313.510 mil</code></pre>
+</div>
+</div>
+</section>
+<section id="aposentadorias-e-reformas" class="level2">
+<h2 class="anchored" data-anchor-id="aposentadorias-e-reformas">13 — Aposentadorias e Reformas</h2>
+<p>Inativos: pelo elemento 01 (ou 86) ou pelas naturezas específicas de aposentadoria.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>c13 <span class="ot">&lt;-</span> d<span class="sc">$</span>grupo<span class="sc">==</span><span class="st">"1"</span> <span class="sc">&amp;</span> (d<span class="sc">$</span>elemento <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"01"</span>,<span class="st">"86"</span>) <span class="sc">|</span> d<span class="sc">$</span>subelem <span class="sc">%in%</span> nat_aposentadoria)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>aposentadorias <span class="ot">&lt;-</span> <span class="fu">somar_se</span>(c13)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"13 Aposentadorias e Reformas:  R$"</span>, <span class="fu">em_mil</span>(aposentadorias), <span class="st">"mil</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>13 Aposentadorias e Reformas:  R$ 127.518.286 mil</code></pre>
+</div>
+</div>
+</section>
+<section id="pensões" class="level2">
+<h2 class="anchored" data-anchor-id="pensões">14 — Pensões</h2>
+<p>Pelo elemento 03 ou pelas naturezas específicas de pensão.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>c14 <span class="ot">&lt;-</span> d<span class="sc">$</span>grupo<span class="sc">==</span><span class="st">"1"</span> <span class="sc">&amp;</span> (d<span class="sc">$</span>elemento<span class="sc">==</span><span class="st">"03"</span> <span class="sc">|</span> d<span class="sc">$</span>subelem <span class="sc">%in%</span> nat_pensoes)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>pensoes <span class="ot">&lt;-</span> <span class="fu">somar_se</span>(c14)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"14 Pensões:  R$"</span>, <span class="fu">em_mil</span>(pensoes), <span class="st">"mil</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>14 Pensões:  R$ 58.894.096 mil</code></pre>
+</div>
+</div>
+</section>
+<section id="terceirização-substituição-de-mão-de-obra" class="level2">
+<h2 class="anchored" data-anchor-id="terceirização-substituição-de-mão-de-obra">16 — Terceirização (substituição de mão de obra)</h2>
+<p>Contratos que substituem servidores contam como despesa de pessoal, mesmo estando no grupo 3 (Outras Despesas Correntes). É o elemento 34.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>c16 <span class="ot">&lt;-</span> d<span class="sc">$</span>grupo <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"1"</span>,<span class="st">"3"</span>) <span class="sc">&amp;</span> d<span class="sc">$</span>elemento<span class="sc">==</span><span class="st">"34"</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>terceirizacao <span class="ot">&lt;-</span> <span class="fu">somar_se</span>(c16)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"16 Terceirização:  R$"</span>, <span class="fu">em_mil</span>(terceirizacao), <span class="st">"mil</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>16 Terceirização:  R$ 1.007.663 mil</code></pre>
+</div>
+</div>
+</section>
+<section id="soma-da-despesa-bruta-i" class="level2">
+<h2 class="anchored" data-anchor-id="soma-da-despesa-bruta-i">Soma da Despesa Bruta (I)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>despesa_bruta <span class="ot">&lt;-</span> vencimentos <span class="sc">+</span> obrigacoes <span class="sc">+</span> aposentadorias <span class="sc">+</span> pensoes <span class="sc">+</span> terceirizacao</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"= DESPESA BRUTA (I):  R$"</span>, <span class="fu">em_mil</span>(despesa_bruta), <span class="st">"mil</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>= DESPESA BRUTA (I):  R$ 431.124.419 mil</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="passo-3-despesas-não-computadas-ii" class="level1">
+<h1>Passo 3 — Despesas Não Computadas (II)</h1>
+<p>A LRF permite <strong>excluir do limite</strong> certas despesas — sobretudo aposentadorias e pensões custeadas por fontes específicas (fundos previdenciários próprios), que não devem pesar no teto de pessoal ativo. Identificamos essas parcelas para subtraí-las.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 21/22/23: elementos 94, 91 e 92 do grupo Pessoal, EXCETO quando são inativos</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">#           custeados pelas fontes de exclusão (esses ficam para a linha 24)</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>nao_inativo_fonte <span class="ot">&lt;-</span> <span class="sc">!</span>(d<span class="sc">$</span>fonte <span class="sc">%in%</span> fontes_exclusao <span class="sc">&amp;</span> <span class="fu">str_detect</span>(d<span class="sc">$</span>subnome, padrao_inativos))</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>c21 <span class="ot">&lt;-</span> d<span class="sc">$</span>grupo<span class="sc">==</span><span class="st">"1"</span> <span class="sc">&amp;</span> d<span class="sc">$</span>elemento<span class="sc">==</span><span class="st">"94"</span> <span class="sc">&amp;</span> nao_inativo_fonte</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>c22 <span class="ot">&lt;-</span> d<span class="sc">$</span>grupo<span class="sc">==</span><span class="st">"1"</span> <span class="sc">&amp;</span> d<span class="sc">$</span>elemento<span class="sc">==</span><span class="st">"91"</span> <span class="sc">&amp;</span> nao_inativo_fonte</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>c23 <span class="ot">&lt;-</span> d<span class="sc">$</span>grupo<span class="sc">==</span><span class="st">"1"</span> <span class="sc">&amp;</span> d<span class="sc">$</span>elemento<span class="sc">==</span><span class="st">"92"</span> <span class="sc">&amp;</span> nao_inativo_fonte</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 24: aposentadorias/pensões custeadas pelas fontes de exclusão (o núcleo da dedução)</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>c24 <span class="ot">&lt;-</span> d<span class="sc">$</span>grupo<span class="sc">==</span><span class="st">"1"</span> <span class="sc">&amp;</span> d<span class="sc">$</span>fonte <span class="sc">%in%</span> fontes_exclusao <span class="sc">&amp;</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  (d<span class="sc">$</span>elemento <span class="sc">%in%</span> elem_apos_pens <span class="sc">|</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>   (d<span class="sc">$</span>elemento <span class="sc">%in%</span> elem_diversos_inat <span class="sc">&amp;</span> <span class="fu">str_detect</span>(d<span class="sc">$</span>subnome, padrao_inativos)))</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>nao_computadas <span class="ot">&lt;-</span> <span class="fu">somar_se</span>(c21) <span class="sc">+</span> <span class="fu">somar_se</span>(c22) <span class="sc">+</span> <span class="fu">somar_se</span>(c23) <span class="sc">+</span> <span class="fu">somar_se</span>(c24)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"= NÃO COMPUTADAS (II):  R$"</span>, <span class="fu">em_mil</span>(nao_computadas), <span class="st">"mil</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>= NÃO COMPUTADAS (II):  R$ 66.924.442 mil</code></pre>
+</div>
+</div>
+</section>
+<section id="passo-4-despesa-líquida-com-pessoal-iii" class="level1">
+<h1>Passo 4 — Despesa Líquida com Pessoal (III)</h1>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>despesa_liquida <span class="ot">&lt;-</span> despesa_bruta <span class="sc">-</span> nao_computadas</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"= DESPESA LÍQUIDA (III):  R$"</span>, <span class="fu">em_mil</span>(despesa_liquida), <span class="st">"mil</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>= DESPESA LÍQUIDA (III):  R$ 364.199.978 mil</code></pre>
+</div>
+</div>
+</section>
+<section id="demonstrativo-completo-e-validação" class="level1">
+<h1>Demonstrativo completo e validação</h1>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>demonstrativo <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">Item =</span> <span class="fu">c</span>(</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"11 Vencimentos e Vantagens"</span>,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"12 Obrigações Patronais"</span>,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"13 Aposentadorias e Reformas"</span>,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"14 Pensões"</span>,</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"16 Terceirização"</span>,</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"= Despesa Bruta (I)"</span>,</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"= (-) Não Computadas (II)"</span>,</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"= Despesa Líquida (III)"</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">`</span><span class="at">R$ mil</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">em_mil</span>(vencimentos), <span class="fu">em_mil</span>(obrigacoes), <span class="fu">em_mil</span>(aposentadorias),</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">em_mil</span>(pensoes), <span class="fu">em_mil</span>(terceirizacao),</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">em_mil</span>(despesa_bruta), <span class="fu">em_mil</span>(nao_computadas), <span class="fu">em_mil</span>(despesa_liquida)</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">check.names =</span> <span class="cn">FALSE</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(demonstrativo, <span class="at">align =</span> <span class="fu">c</span>(<span class="st">"l"</span>, <span class="st">"r"</span>))</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Item</th>
+<th style="text-align: right;">R$ mil</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">11 Vencimentos e Vantagens</td>
+<td style="text-align: right;">210.390.865</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">12 Obrigações Patronais</td>
+<td style="text-align: right;">33.313.510</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">13 Aposentadorias e Reformas</td>
+<td style="text-align: right;">127.518.286</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">14 Pensões</td>
+<td style="text-align: right;">58.894.096</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">16 Terceirização</td>
+<td style="text-align: right;">1.007.663</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">= Despesa Bruta (I)</td>
+<td style="text-align: right;">431.124.419</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">= (-) Não Computadas (II)</td>
+<td style="text-align: right;">66.924.442</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">= Despesa Líquida (III)</td>
+<td style="text-align: right;">364.199.978</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>oficial_mil <span class="ot">&lt;-</span> <span class="dv">364199978</span>   <span class="co"># Despesa Líquida com Pessoal — DOU (RGF 3º quadr./2025)</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>nosso_mil   <span class="ot">&lt;-</span> <span class="fu">round</span>(despesa_liquida <span class="sc">/</span> <span class="dv">1000</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>diferenca   <span class="ot">&lt;-</span> nosso_mil <span class="sc">-</span> oficial_mil</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>rcl_2025_mil <span class="ot">&lt;-</span> <span class="dv">1517735497</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>dtp_sobre_rcl <span class="ot">&lt;-</span> nosso_mil <span class="sc">/</span> rcl_2025_mil <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Nossa Despesa Líquida:  R$"</span>, <span class="fu">format</span>(nosso_mil,   <span class="at">big.mark=</span><span class="st">"."</span>, <span class="at">decimal.mark=</span><span class="st">","</span>), <span class="st">"mil</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Nossa Despesa Líquida:  R$ 364.199.978 mil</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Oficial:  R$"</span>,              <span class="fu">format</span>(oficial_mil, <span class="at">big.mark=</span><span class="st">"."</span>, <span class="at">decimal.mark=</span><span class="st">","</span>), <span class="st">"mil</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Oficial:  R$ 364.199.978 mil</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Diferença:  R$"</span>,            <span class="fu">format</span>(diferenca,   <span class="at">big.mark=</span><span class="st">"."</span>, <span class="at">decimal.mark=</span><span class="st">","</span>), <span class="st">"mil</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Diferença:  R$ 0 mil</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"DTP / RCL:  "</span>, <span class="fu">round</span>(dtp_sobre_rcl, <span class="dv">3</span>), <span class="st">"%</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>DTP / RCL:   23.996 %</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (diferenca <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"VALIDADO: bate centavo a centavo com o Diário Oficial.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Diferença encontrada — investigar.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>VALIDADO: bate centavo a centavo com o Diário Oficial.</code></pre>
+</div>
+</div>
+</section>
+<section id="conclusão" class="level1">
+<h1>Conclusão</h1>
+<p>A Despesa Total com Pessoal consolidada de 2025 foi reproduzida a partir de dados <strong>exclusivamente públicos</strong>, e coincide com o valor oficial. Apesar da complexidade das regras — várias inclusões e exclusões previstas na LRF — cada critério está aqui explícito e nomeado, permitindo que qualquer pessoa confira ou questione uma regra específica. É esse o valor do <em>literate programming</em> para a transparência: a metodologia deixa de ser uma “caixa-preta” e passa a ser texto legível ao lado do código que a executa.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiada");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiada");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

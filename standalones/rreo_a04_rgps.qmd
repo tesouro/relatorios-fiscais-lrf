@@ -1,0 +1,337 @@
+---
+title: "RREO Anexo 4 - Demonstrativo do Resultado Previdenciário (RGPS)"
+subtitle: "Material Suplementar - Documento Quarto Executável"
+lang: pt
+format:
+  html:
+    toc: true
+    code-fold: false
+    theme: flatly
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Sobre este documento
+
+Este é um documento **Quarto executável**: o mesmo arquivo que gera o relatório contém o código que produz os resultados. Faz parte de um **projeto experimental / piloto** de transparência fiscal — uma prova de conceito que demonstra a reprodução de demonstrativos oficiais a partir de dados públicos.
+
+Para reproduzir os resultados:
+
+1. Instale [R](https://cran.r-project.org/) e [Quarto](https://quarto.org)
+2. Baixe os arquivos de dados conforme instruções na Seção 2
+3. Coloque os arquivos na mesma pasta deste `.qmd`
+4. Execute: `quarto render rreo_a04_rgps.qmd`
+
+# Fontes de dados
+
+## Receitas — Siga Brasil (Senado Federal)
+
+**Portal:** <https://www12.senado.leg.br/orcamento/sigabrasil>
+
+**Caminho de acesso:**
+Painel de Receitas → Arrecadação → Ano: 2025 → Esfera: Fiscal + Seguridade → Exportar em Excel
+
+**Arquivo resultante:** `receita_siga.xlsx`
+
+**Colunas utilizadas:**
+
+| Coluna no arquivo              | Papel no cálculo                          |
+|-------------------------------|-------------------------------------------|
+| `UO (Cod) Rec`                | Identifica as UOs do RGPS                 |
+| `Natureza Receita (Cod) Rec`  | Distingue contribuições (1214\*)          |
+| `Categoria Econômica (Cod)`   | Corrente (1), Capital (2), Intra (7/8)    |
+| `Origem (Cod) Rec`            | Contribuições (12), Compensação (19)      |
+| `Arrecadação`                 | Valor realizado                           |
+
+## Despesas — SOF (Secretaria de Orçamento Federal)
+
+**Portal:** <https://www1.siop.planejamento.gov.br/painelorcamento>
+
+**Arquivo resultante:** `despesa_sof.xlsx`
+
+**Colunas utilizadas:**
+
+| Coluna no arquivo         | Papel no cálculo                              |
+|--------------------------|-----------------------------------------------|
+| `Unidade Orçamentária`   | Identifica as UOs do RGPS                     |
+| `Ação`                   | Identifica compensações (009W, 0531)          |
+| `Grupo de Despesa`       | Grupo 3 = Outras Despesas Correntes           |
+| `Modalidade de Aplicação`| Modalidade 91 = Intra-orçamentária            |
+| `Natureza de Despesa`    | Posições 5–6 = elemento de despesa            |
+| `Empenhado`              | Valor empenhado                               |
+
+# Onde estão os dados (leia antes de executar)
+
+Este documento lê dois arquivos Excel a partir da pasta `dados/rgps/` do repositório. Como o `.qmd` está em `standalones/`, o caminho padrão é **`../dados/rgps`** (um nível acima, dentro de `dados/rgps`).
+
+Se você renderizar o documento a partir da própria pasta `standalones/`, **não precisa mudar nada**. Se os seus arquivos estiverem em outro lugar, ajuste apenas a variável `pasta_dados` no bloco de configuração abaixo. Exemplos:
+
+- Arquivos na mesma pasta do `.qmd`:  `pasta_dados <- "."`
+- Arquivos em `dados/rgps/` (padrão):  `pasta_dados <- "../dados/rgps"`
+- Um caminho completo no seu computador:  `pasta_dados <- "C:/Users/voce/Desktop/dados"` (use barras normais `/`, mesmo no Windows)
+
+# Configuração inicial
+
+```{r}
+#| label: setup
+
+library(readxl)
+library(dplyr)
+library(stringr)
+library(tidyr)
+library(knitr)
+
+# ---------------------------------------------------------------------------
+# CAMINHO DAS BASES DE DADOS  <-- ajuste aqui se necessário (veja seção acima)
+# ---------------------------------------------------------------------------
+pasta_dados <- "../dados/rgps"
+
+# Monta o caminho completo de um arquivo dentro da pasta de dados.
+# Ex.: caminho_dado("receita_siga.xlsx") -> "../dados/rgps/receita_siga.xlsx"
+caminho_dado <- function(arquivo) file.path(pasta_dados, arquivo)
+
+# Função: formatar valores em reais
+formatar_reais <- function(x) {
+  format(x, big.mark = ".", decimal.mark = ",", nsmall = 2, scientific = FALSE)
+}
+```
+
+# Parâmetros do RGPS
+
+O RREO Anexo 4 segrega o Regime Geral de Previdência Social (RGPS) e os Regimes Próprios (RPPS). O RGPS é identificado por quatro Unidades Orçamentárias (UOs), conforme o Manual de Demonstrativos Fiscais (MDF) da STN:
+
+```{r}
+#| label: parametros-rgps
+
+uos_rgps <- c(
+  "33904",  # Fundo do Regime Geral de Previdência Social
+  "40904",  # Fundo de Amparo ao Trabalhador (FAT)
+  "55902",  # Fundo Nacional de Assistência Social (FNAS)
+  "25917"   # Fundo do Seguro Rural
+)
+```
+
+# Receitas previdenciárias do RGPS
+
+## Critérios de classificação
+
+O MDF-STN define sete itens de receita para o RGPS. A classificação utiliza três atributos da base do Siga Brasil:
+
+- **Natureza de receita** (8 dígitos): naturezas iniciadas em `1214` são contribuições de empregadores e trabalhadores
+- **Categoria econômica**: 1 = corrente, 2 = capital, 7/8 = intra-orçamentária  
+- **Origem**: 12 = contribuições, 19 = compensação previdenciária, 22 = alienações
+
+## Importação e classificação
+
+```{r}
+#| label: receitas-rgps
+
+dados_receita_siga <- read_excel(caminho_dado("receita_siga.xlsx"))
+
+dados_receita_siga <- dados_receita_siga |>
+  rename(
+    unidade_orcamentaria_codigo       = `UO (Cod) Rec`,
+    natureza_receita_codigo_completo  = `Natureza Receita (Cod) Rec`,
+    nre1_categoria_economica_codigo   = `Categoria Econômica (Cod) Receita`,
+    nre2_origem_receita_codigo_origem = `Origem (Cod) Rec`,
+    saldo_r_item_informacao           = `Arrecadação`
+  ) |>
+  mutate(across(c(unidade_orcamentaria_codigo,
+                  natureza_receita_codigo_completo,
+                  nre1_categoria_economica_codigo,
+                  nre2_origem_receita_codigo_origem), as.character))
+
+receitas_rgps <- dados_receita_siga |>
+  filter(unidade_orcamentaria_codigo %in% uos_rgps) |>
+  mutate(item_receita = case_when(
+    # 01 - Contribuições de empregadores, trabalhadores e demais segurados
+    # Naturezas iniciadas em 1214 (contribuições previdenciárias ao RGPS)
+    str_starts(natureza_receita_codigo_completo, "1214")
+      ~ "01 Receitas de Contribuições",
+
+    # 02 - Demais contribuições (origem 12, exceto natureza 1214*)
+    nre2_origem_receita_codigo_origem == "12"
+      ~ "02 Outras Contribuições",
+
+    # 03 - Compensação previdenciária RPPS/RGPS (origem 19)
+    nre2_origem_receita_codigo_origem == "19"
+      ~ "03 Compensação Previdenciária RPPS para RGPS",
+
+    # 04 - Demais receitas correntes (categoria 1, exceto origens 12 e 19)
+    nre1_categoria_economica_codigo == "1"
+      ~ "04 Demais Receitas Correntes",
+
+    # 05 - Alienação de bens (categoria 2, origem 22)
+    nre1_categoria_economica_codigo == "2" &
+    nre2_origem_receita_codigo_origem == "22"
+      ~ "05 Alienação de Bens",
+
+    # 06 - Demais receitas de capital (categoria 2, exceto origem 22)
+    nre1_categoria_economica_codigo == "2"
+      ~ "06 Outras Receitas de Capital",
+
+    # 07 - Intra-orçamentárias (categorias 7 ou 8)
+    nre1_categoria_economica_codigo %in% c("7", "8")
+      ~ "07 Receitas Previdenciárias (INTRA)",
+
+    TRUE ~ "99 Não classificado"
+  )) |>
+  group_by(item_receita) |>
+  summarise(valor = sum(saldo_r_item_informacao, na.rm = TRUE), .groups = "drop") |>
+  filter(valor != 0) |>
+  arrange(item_receita)
+
+total_receita_rgps <- sum(receitas_rgps$valor)
+```
+
+## Resultado das receitas
+
+```{r}
+#| label: tabela-receitas
+
+receitas_rgps |>
+  bind_rows(tibble(item_receita = "TOTAL", valor = total_receita_rgps)) |>
+  mutate(valor_milhares = formatar_reais(valor / 1000)) |>
+  select(item_receita, valor_milhares) |>
+  kable(col.names = c("Item", "R$ milhares"),
+        align = c("l", "r"),
+        caption = "Receitas previdenciárias do RGPS — 2025")
+```
+
+# Despesas previdenciárias do RGPS
+
+## Critérios de classificação
+
+O MDF-STN define sete itens de despesa para o RGPS. A classificação utiliza:
+
+- **Elemento de despesa**: extraído das posições 5–6 do código de natureza de despesa (ex.: código `33905300` → elemento `53` = aposentadorias RGPS)
+- **Grupo de despesa**: apenas grupo 3 (Outras Despesas Correntes)
+- **Modalidade de aplicação**: modalidade 91 = intra-orçamentária
+- **Ação governamental**: ações `009W` e `0531` identificam compensações entre RGPS e RPPS
+
+## Importação e classificação
+
+```{r}
+#| label: despesas-rgps
+
+dados_despesa_sof <- read_excel(caminho_dado("despesa_sof.xlsx"))
+
+dados_despesa_sof <- dados_despesa_sof |>
+  mutate(
+    unidade_orcamentaria_codigo = str_extract(`Unidade Orçamentária`, "^[0-9]+"),
+    acao_governo_codigo         = str_extract(`Ação`, "^[A-Za-z0-9]+"),
+    grupo_despesa_codigo_grupo  = str_extract(`Grupo de Despesa`, "^[0-9]+"),
+    modalidade_aplicacao_codigo = str_extract(`Modalidade de Aplicação`, "^[0-9]+"),
+    # Elemento: posições 5-6 do código de natureza de despesa
+    # Exemplo: "33905300" -> "53" (Aposentadorias e Reformas - RGPS)
+    elemento_despesa_codigo     = str_sub(
+      str_extract(`Natureza de Despesa`, "^[0-9]+"), 5, 6
+    ),
+    saldo_r_item_informacao = as.numeric(Empenhado)
+  )
+
+despesas_rgps <- dados_despesa_sof |>
+  filter(unidade_orcamentaria_codigo %in% uos_rgps) |>
+  mutate(item_despesa = case_when(
+    # 01 - Aposentadorias e reformas (elementos 53 ou 54)
+    elemento_despesa_codigo %in% c("53", "54") &
+    grupo_despesa_codigo_grupo == "3" &
+    modalidade_aplicacao_codigo != "91"
+      ~ "01 Aposentadorias",
+
+    # 02 - Pensões (elementos 55 ou 56)
+    elemento_despesa_codigo %in% c("55", "56") &
+    grupo_despesa_codigo_grupo == "3" &
+    modalidade_aplicacao_codigo != "91"
+      ~ "02 Pensões",
+
+    # 03 - Outros benefícios previdenciários (elementos 57 ou 58)
+    elemento_despesa_codigo %in% c("57", "58") &
+    grupo_despesa_codigo_grupo == "3" &
+    modalidade_aplicacao_codigo != "91"
+      ~ "03 Outros Benefícios",
+
+    # 04 - Compensação previdenciária RGPS/RPPS (ações 009W e 0531)
+    acao_governo_codigo %in% c("009W", "0531") &
+    grupo_despesa_codigo_grupo == "3" &
+    modalidade_aplicacao_codigo != "91"
+      ~ "04 Compensação RGPS para RPPS",
+
+    # 05 - Demais despesas correntes (grupo 3, não-intra, não classificadas)
+    !elemento_despesa_codigo %in% c("53","54","55","56","57","58","00") &
+    !acao_governo_codigo %in% c("009W", "0531") &
+    grupo_despesa_codigo_grupo == "3" &
+    modalidade_aplicacao_codigo != "91"
+      ~ "05 Demais Despesas",
+
+    # 06 - A Detalhar (elemento 00)
+    elemento_despesa_codigo == "00" &
+    grupo_despesa_codigo_grupo == "3" &
+    modalidade_aplicacao_codigo != "91"
+      ~ "06 A Detalhar",
+
+    # 07 - Intra-orçamentárias (modalidade 91, grupo 3)
+    grupo_despesa_codigo_grupo == "3" &
+    modalidade_aplicacao_codigo == "91"
+      ~ "07 Despesas Previdenciárias (INTRA)",
+
+    TRUE ~ NA_character_
+  )) |>
+  filter(!is.na(item_despesa)) |>
+  group_by(item_despesa) |>
+  summarise(valor = sum(saldo_r_item_informacao, na.rm = TRUE), .groups = "drop") |>
+  filter(valor != 0) |>
+  arrange(item_despesa)
+
+total_despesa_rgps <- sum(despesas_rgps$valor)
+```
+
+## Resultado das despesas
+
+```{r}
+#| label: tabela-despesas
+
+despesas_rgps |>
+  bind_rows(tibble(item_despesa = "TOTAL", valor = total_despesa_rgps)) |>
+  mutate(valor_milhares = formatar_reais(valor / 1000)) |>
+  select(item_despesa, valor_milhares) |>
+  kable(col.names = c("Item", "R$ milhares"),
+        align = c("l", "r"),
+        caption = "Despesas previdenciárias do RGPS — 2025")
+```
+
+# Resultado previdenciário e validação
+
+```{r}
+#| label: resultado-validacao
+
+resultado_rgps <- total_receita_rgps - total_despesa_rgps
+
+# Valores do relatório oficial (R$ milhares)
+oficial_receita   <- 709399406
+oficial_despesa   <- 1030366445
+oficial_resultado <- -320967039
+
+tibble(
+  Item      = c("Receitas Previdenciárias",
+                "Despesas Previdenciárias",
+                "Resultado Previdenciário"),
+  Calculado = c(total_receita_rgps / 1000,
+                total_despesa_rgps / 1000,
+                resultado_rgps / 1000),
+  Oficial   = c(oficial_receita,
+                oficial_despesa,
+                oficial_resultado),
+  Diferença = Calculado - Oficial
+) |>
+  mutate(across(c(Calculado, Oficial, Diferença), formatar_reais)) |>
+  kable(align = c("l","r","r","r"),
+        caption = "Validação: calculado vs. oficial (R$ milhares)")
+```
+
+---
+
+*Documento gerado com Quarto e R `r R.version$major`.`r R.version$minor`.*  
+*Dados: Siga Brasil (Senado Federal) e SOF — exercício 2025.*
