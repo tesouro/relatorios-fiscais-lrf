@@ -103,6 +103,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#passo-3-despesas-não-computadas-ii" id="toc-passo-3-despesas-não-computadas-ii" class="nav-link" data-scroll-target="#passo-3-despesas-não-computadas-ii">Passo 3 — Despesas Não Computadas (II)</a></li>
   <li><a href="#passo-4-despesa-líquida-com-pessoal-iii" id="toc-passo-4-despesa-líquida-com-pessoal-iii" class="nav-link" data-scroll-target="#passo-4-despesa-líquida-com-pessoal-iii">Passo 4 — Despesa Líquida com Pessoal (III)</a></li>
   <li><a href="#demonstrativo-completo-e-validação" id="toc-demonstrativo-completo-e-validação" class="nav-link" data-scroll-target="#demonstrativo-completo-e-validação">Demonstrativo completo e validação</a></li>
+  <li><a href="#nota-metodológica" id="toc-nota-metodológica" class="nav-link" data-scroll-target="#nota-metodológica">Nota metodológica</a></li>
   <li><a href="#conclusão" id="toc-conclusão" class="nav-link" data-scroll-target="#conclusão">Conclusão</a></li>
   </ul>
 </nav>
@@ -143,6 +144,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <p>Ou seja: somamos tudo que é pessoal (vencimentos, encargos, aposentadorias, pensões, terceirização) e depois <strong>subtraímos as parcelas que a própria LRF permite excluir</strong> do limite (como certas aposentadorias custeadas por fontes específicas). O resultado — a DTP Líquida — é o número que se compara ao teto legal.</p>
 <p>Este cálculo é <strong>consolidado</strong> (soma dos três Poderes). A abertura por Poder depende de uma segmentação institucional que a base pública do Siga Brasil não fornece; por isso trabalhamos com o total consolidado, que valida exatamente.</p>
+<p><strong>Escopo desta prova de conceito:</strong> apuramos aqui exclusivamente a <strong>despesa liquidada</strong>. Os Restos a Pagar Não Processados não entram no cálculo, e não se apresenta a razão DTP/RCL nem a apuração do cumprimento dos limites legais. A justificativa dessa escolha está na seção <a href="#nota-metodológica">Nota metodológica</a>, ao final.</p>
 </section>
 <section id="fonte-de-dados" class="level1">
 <h1>Fonte de dados</h1>
@@ -521,42 +523,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>oficial_mil <span class="ot">&lt;-</span> <span class="dv">364199978</span>   <span class="co"># Despesa Líquida com Pessoal — DOU (RGF 3º quadr./2025)</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>nosso_mil   <span class="ot">&lt;-</span> <span class="fu">round</span>(despesa_liquida <span class="sc">/</span> <span class="dv">1000</span>)</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>diferenca   <span class="ot">&lt;-</span> nosso_mil <span class="sc">-</span> oficial_mil</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ESCOPO: apura somente despesa liquidada. Os Restos a Pagar Não Processados</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># existem na base pública, mas exigiriam extração adicional — ficaram fora</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># desta prova de conceito. Ver a seção "Nota metodológica", logo abaixo.</span></span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>rcl_2025_mil <span class="ot">&lt;-</span> <span class="dv">1517735497</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>dtp_sobre_rcl <span class="ot">&lt;-</span> nosso_mil <span class="sc">/</span> rcl_2025_mil <span class="sc">*</span> <span class="dv">100</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Nossa Despesa Líquida:  R$"</span>, <span class="fu">format</span>(nosso_mil,   <span class="at">big.mark=</span><span class="st">"."</span>, <span class="at">decimal.mark=</span><span class="st">","</span>), <span class="st">"mil</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>oficial_mil <span class="ot">&lt;-</span> <span class="dv">364199978</span>   <span class="co"># Despesa liquidada com pessoal — DOU (RGF 3º quadr./2025)</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>nosso_mil   <span class="ot">&lt;-</span> <span class="fu">round</span>(despesa_liquida <span class="sc">/</span> <span class="dv">1000</span>)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>diferenca   <span class="ot">&lt;-</span> nosso_mil <span class="sc">-</span> oficial_mil</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Nossa Despesa Líquida (somente liquidada): R$"</span>, <span class="fu">format</span>(nosso_mil,   <span class="at">big.mark=</span><span class="st">"."</span>, <span class="at">decimal.mark=</span><span class="st">","</span>), <span class="st">"mil</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Nossa Despesa Líquida:  R$ 364.199.978 mil</code></pre>
+<pre><code>Nossa Despesa Líquida (somente liquidada): R$ 364.199.978 mil</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Oficial:  R$"</span>,              <span class="fu">format</span>(oficial_mil, <span class="at">big.mark=</span><span class="st">"."</span>, <span class="at">decimal.mark=</span><span class="st">","</span>), <span class="st">"mil</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Oficial (mesma base):                      R$"</span>, <span class="fu">format</span>(oficial_mil, <span class="at">big.mark=</span><span class="st">"."</span>, <span class="at">decimal.mark=</span><span class="st">","</span>), <span class="st">"mil</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Oficial:  R$ 364.199.978 mil</code></pre>
+<pre><code>Oficial (mesma base):                      R$ 364.199.978 mil</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Diferença:  R$"</span>,            <span class="fu">format</span>(diferenca,   <span class="at">big.mark=</span><span class="st">"."</span>, <span class="at">decimal.mark=</span><span class="st">","</span>), <span class="st">"mil</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Diferença:                                 R$"</span>, <span class="fu">format</span>(diferenca,   <span class="at">big.mark=</span><span class="st">"."</span>, <span class="at">decimal.mark=</span><span class="st">","</span>), <span class="st">"mil</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Diferença:  R$ 0 mil</code></pre>
+<pre><code>Diferença:                                 R$ 0 mil</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"DTP / RCL:  "</span>, <span class="fu">round</span>(dtp_sobre_rcl, <span class="dv">3</span>), <span class="st">"%</span><span class="sc">\n\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>DTP / RCL:   23.996 %</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (diferenca <span class="sc">==</span> <span class="dv">0</span>) {</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"VALIDADO: bate centavo a centavo com o Diário Oficial.</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Diferença encontrada — investigar.</span><span class="sc">\n</span><span class="st">"</span>)</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (diferenca <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"VALIDADO: bate centavo a centavo com o Diário Oficial.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">"Diferença encontrada — investigar.</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>VALIDADO: bate centavo a centavo com o Diário Oficial.</code></pre>
 </div>
 </div>
 </section>
+<section id="nota-metodológica" class="level1">
+<h1>Nota metodológica</h1>
+<p>Este demonstrativo apura exclusivamente a <strong>despesa liquidada</strong>. Os Restos a Pagar Não Processados <strong>estão disponíveis na base pública</strong>, mas sua incorporação exigiria uma extração adicional e ampliaria a complexidade desta prova de conceito, cujo objetivo é demonstrar que o demonstrativo é <strong>replicável</strong> com dados públicos — não reproduzir seu valor integral para fins de apuração de limite.</p>
+<p>Pela mesma razão, não se apresenta a relação Despesa Total com Pessoal / Receita Corrente Líquida nem a apuração do cumprimento dos limites dos arts. 19 e 20 da LRF. A comparação acima é apenas de valores, contra a parcela liquidada publicada no Diário Oficial.</p>
+<p>A extensão para o valor integral, com os Restos a Pagar Não Processados, é imediata a partir do mesmo pipeline: basta acrescentar a extração correspondente e somá-la às linhas já calculadas — a estrutura de critérios permanece a mesma.</p>
+</section>
 <section id="conclusão" class="level1">
 <h1>Conclusão</h1>
-<p>A Despesa Total com Pessoal consolidada de 2025 foi reproduzida a partir de dados <strong>exclusivamente públicos</strong>, e coincide com o valor oficial. Apesar da complexidade das regras — várias inclusões e exclusões previstas na LRF — cada critério está aqui explícito e nomeado, permitindo que qualquer pessoa confira ou questione uma regra específica. É esse o valor do <em>literate programming</em> para a transparência: a metodologia deixa de ser uma “caixa-preta” e passa a ser texto legível ao lado do código que a executa.</p>
+<p>A Despesa com Pessoal consolidada de 2025, na sua parcela liquidada, foi reproduzida a partir de dados <strong>exclusivamente públicos</strong> e coincide com o valor oficial. Apesar da complexidade das regras — várias inclusões e exclusões previstas na LRF — cada critério está aqui explícito e nomeado, permitindo que qualquer pessoa confira ou questione uma regra específica.</p>
+<p>É esse o valor do <em>literate programming</em> para a transparência: a metodologia deixa de ser uma “caixa-preta” e passa a ser texto legível ao lado do código que a executa. E o mesmo vale para os limites do trabalho — o que ficou de fora está dito com todas as letras, no lugar em que o leitor vai procurar.</p>
 </section>
 
 </main>
