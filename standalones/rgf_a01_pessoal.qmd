@@ -31,6 +31,8 @@ Ou seja: somamos tudo que é pessoal (vencimentos, encargos, aposentadorias, pen
 
 Este cálculo é **consolidado** (soma dos três Poderes). A abertura por Poder depende de uma segmentação institucional que a base pública do Siga Brasil não fornece; por isso trabalhamos com o total consolidado, que valida exatamente.
 
+**Escopo desta prova de conceito:** apuramos aqui exclusivamente a **despesa liquidada**. Os Restos a Pagar Não Processados não entram no cálculo, e não se apresenta a razão DTP/RCL nem a apuração do cumprimento dos limites legais. A justificativa dessa escolha está na seção [Nota metodológica](#nota-metodológica), ao final.
+
 # Fonte de dados
 
 Os dados vêm do **Siga Brasil** (Senado Federal): <https://www12.senado.leg.br/orcamento/sigabrasil>
@@ -341,17 +343,17 @@ kable(demonstrativo, align = c("l", "r"))
 ```{r}
 #| label: validacao
 
-oficial_mil <- 364199978   # Despesa Líquida com Pessoal — DOU (RGF 3º quadr./2025)
+# ESCOPO: apura somente despesa liquidada. Os Restos a Pagar Não Processados
+# existem na base pública, mas exigiriam extração adicional — ficaram fora
+# desta prova de conceito. Ver a seção "Nota metodológica", logo abaixo.
+
+oficial_mil <- 364199978   # Despesa liquidada com pessoal — DOU (RGF 3º quadr./2025)
 nosso_mil   <- round(despesa_liquida / 1000)
 diferenca   <- nosso_mil - oficial_mil
 
-rcl_2025_mil <- 1517735497
-dtp_sobre_rcl <- nosso_mil / rcl_2025_mil * 100
-
-cat("Nossa Despesa Líquida:  R$", format(nosso_mil,   big.mark=".", decimal.mark=","), "mil\n")
-cat("Oficial:  R$",              format(oficial_mil, big.mark=".", decimal.mark=","), "mil\n")
-cat("Diferença:  R$",            format(diferenca,   big.mark=".", decimal.mark=","), "mil\n")
-cat("DTP / RCL:  ", round(dtp_sobre_rcl, 3), "%\n\n")
+cat("Nossa Despesa Líquida (somente liquidada): R$", format(nosso_mil,   big.mark=".", decimal.mark=","), "mil\n")
+cat("Oficial (mesma base):                      R$", format(oficial_mil, big.mark=".", decimal.mark=","), "mil\n")
+cat("Diferença:                                 R$", format(diferenca,   big.mark=".", decimal.mark=","), "mil\n\n")
 
 if (diferenca == 0) {
   cat("VALIDADO: bate centavo a centavo com o Diário Oficial.\n")
@@ -360,6 +362,16 @@ if (diferenca == 0) {
 }
 ```
 
+# Nota metodológica
+
+Este demonstrativo apura exclusivamente a **despesa liquidada**. Os Restos a Pagar Não Processados **estão disponíveis na base pública**, mas sua incorporação exigiria uma extração adicional e ampliaria a complexidade desta prova de conceito, cujo objetivo é demonstrar que o demonstrativo é **replicável** com dados públicos — não reproduzir seu valor integral para fins de apuração de limite.
+
+Pela mesma razão, não se apresenta a relação Despesa Total com Pessoal / Receita Corrente Líquida nem a apuração do cumprimento dos limites dos arts. 19 e 20 da LRF. A comparação acima é apenas de valores, contra a parcela liquidada publicada no Diário Oficial.
+
+A extensão para o valor integral, com os Restos a Pagar Não Processados, é imediata a partir do mesmo pipeline: basta acrescentar a extração correspondente e somá-la às linhas já calculadas — a estrutura de critérios permanece a mesma.
+
 # Conclusão
 
-A Despesa Total com Pessoal consolidada de 2025 foi reproduzida a partir de dados **exclusivamente públicos**, e coincide com o valor oficial. Apesar da complexidade das regras — várias inclusões e exclusões previstas na LRF — cada critério está aqui explícito e nomeado, permitindo que qualquer pessoa confira ou questione uma regra específica. É esse o valor do *literate programming* para a transparência: a metodologia deixa de ser uma "caixa-preta" e passa a ser texto legível ao lado do código que a executa.
+A Despesa com Pessoal consolidada de 2025, na sua parcela liquidada, foi reproduzida a partir de dados **exclusivamente públicos** e coincide com o valor oficial. Apesar da complexidade das regras — várias inclusões e exclusões previstas na LRF — cada critério está aqui explícito e nomeado, permitindo que qualquer pessoa confira ou questione uma regra específica.
+
+É esse o valor do *literate programming* para a transparência: a metodologia deixa de ser uma "caixa-preta" e passa a ser texto legível ao lado do código que a executa. E o mesmo vale para os limites do trabalho — o que ficou de fora está dito com todas as letras, no lugar em que o leitor vai procurar.
