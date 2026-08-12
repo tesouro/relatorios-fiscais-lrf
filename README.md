@@ -6,6 +6,23 @@ Não é uma proposta teórica: os números abaixo batem, casa decimal por casa d
 
 > **Projeto experimental / piloto.** Esta é uma prova de conceito de transparência fiscal, em caráter exploratório. O objetivo é demonstrar a viabilidade da abordagem, não substituir os demonstrativos oficiais — a fonte oficial continua sendo o que a União publica no Diário Oficial.
 
+## 📄 Leia os relatórios
+
+Não é preciso instalar nada nem saber programar. Cada link abaixo abre uma página
+no navegador com a explicação dos critérios, o cálculo e a conferência contra o
+valor publicado no Diário Oficial:
+
+| Demonstrativo | O que mede |
+|---|---|
+| [**RGPS** — RREO Anexo 4](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_a04_rgps.html) | Déficit da Previdência do INSS |
+| [**RCL** — RREO Anexo 3](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_a03_rcl.html) | Receita Corrente Líquida, a "régua" dos limites fiscais |
+| [**Despesa com saúde** — RREO Anexo 12](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_a12_saude.html) | Se a União aplicou o mínimo constitucional em saúde |
+| [**Despesa com pessoal** — RGF Anexo 1](https://tesouro.github.io/relatorios-fiscais-lrf/rgf_a01_pessoal.html) | Quanto a União gasta com folha, nos três Poderes |
+| [**Pessoal por elemento** — RREO Tabela 2](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_t02_pessoal.html) | Detalhamento da folha por tipo de despesa |
+
+O restante deste documento explica como esses números foram obtidos e por que
+isso importa.
+
 ## Por que é inovador
 
 Até onde levantamos, **não há registro de outro governo ou ente — no Brasil ou no exterior — que disponibilize, de forma aberta e conjunta, os dados e o código capazes de reproduzir seus demonstrativos fiscais oficiais, validados contra o valor publicado.**
@@ -36,6 +53,7 @@ O resultado bate, centavo a centavo, com o que o Tesouro Nacional publicou ofici
 **Onde está no repositório:**
 
 - Código executável: [`standalones/rreo_a04_rgps.qmd`](standalones/rreo_a04_rgps.qmd) — documento Quarto que junta narrativa e cálculo no mesmo arquivo (basta rodar `quarto render`)
+- Leitura direta no navegador, sem instalar nada: [versão renderizada em HTML](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_a04_rgps.html)
 - Dados de entrada: `dados/rgps/receita_siga.xlsx` e `dados/rgps/despesa_sof.xlsx`
 - Demonstrativo oficial para conferência: [RREO — Dezembro/2025](https://www.tesourotransparente.gov.br/publicacoes/relatorio-resumido-da-execucao-orcamentaria-rreo/2025/12) (RREO Anexo 4)
 
@@ -49,13 +67,13 @@ Se conseguimos reproduzir o RGPS, o que mais dá para reproduzir com dado públi
 
 Testamos e validamos **mais quatro demonstrativos exigidos pela Lei de Responsabilidade Fiscal (LRF)**, convergência centavo a centavo com o Diário Oficial (exercício 2025) — com uma diferença residual de arredondamento na Tabela 2, documentada no próprio arquivo:
 
-| Demonstrativo | O que mede, em uma frase | Fonte oficial para conferência |
-|---|---|---|
-| **RGPS** (RREO Anexo 4) | Déficit da Previdência do INSS | RREO Dezembro/2025 |
-| **RCL** (RREO Anexo 3) | Receita Corrente Líquida — a "régua" usada para medir limites fiscais | RREO Dezembro/2025 |
-| **Despesa com saúde** (RREO Anexo 12) | Se a União aplicou o mínimo constitucional em saúde | RREO Dezembro/2025 |
-| **Despesa com pessoal** (RGF Anexo 1, total consolidado) | Quanto a União gasta com folha de pagamento, nos três Poderes | RGF 2025 — Consolidado |
-| **Pessoal por elemento da despesa** (RREO Tabela 2) | Detalhamento da folha por tipo de despesa | RREO Dezembro/2025 |
+| Demonstrativo | O que mede, em uma frase | Ler online | Fonte oficial para conferência |
+|---|---|---|---|
+| **RGPS** (RREO Anexo 4) | Déficit da Previdência do INSS | [abrir](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_a04_rgps.html) | RREO Dezembro/2025 |
+| **RCL** (RREO Anexo 3) | Receita Corrente Líquida — a "régua" usada para medir limites fiscais | [abrir](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_a03_rcl.html) | RREO Dezembro/2025 |
+| **Despesa com saúde** (RREO Anexo 12) | Se a União aplicou o mínimo constitucional em saúde | [abrir](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_a12_saude.html) | RREO Dezembro/2025 |
+| **Despesa com pessoal** (RGF Anexo 1, total consolidado) | Quanto a União gasta com folha de pagamento, nos três Poderes | [abrir](https://tesouro.github.io/relatorios-fiscais-lrf/rgf_a01_pessoal.html) | RGF 2025 — Consolidado |
+| **Pessoal por elemento da despesa** (RREO Tabela 2) | Detalhamento da folha por tipo de despesa | [abrir](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_t02_pessoal.html) | RREO Dezembro/2025 |
 
 Links das fontes oficiais: [RREO Dezembro/2025](https://www.tesourotransparente.gov.br/publicacoes/relatorio-resumido-da-execucao-orcamentaria-rreo/2025/12) · [RGF 2025 Consolidado](https://www.tesourotransparente.gov.br/publicacoes/relatorio-de-gestao-fiscal-rgf/2025/31)
 
@@ -102,7 +120,7 @@ relatorios-fiscais-lrf/
 │   ├── despesa_unificada.csv.gz   # base única de despesa 2025 (Saúde, RGF A1, Tab. 2, RCL)
 │   ├── rcl_receita.csv.gz         # receita 2025 (RCL)
 │   └── rgps/                      # bases próprias do RGPS (Siga Brasil + SOF)
-├── docs/                          # versões renderizadas em HTML (leitura sem executar nada)
+├── docs/                          # versões em HTML, publicadas em tesouro.github.io/relatorios-fiscais-lrf
 └── README.md
 ```
 
@@ -132,10 +150,10 @@ Os documentos localizam sozinhos a pasta `dados/`, então funcionam sem
 configurar caminhos nem usar `setwd()`. Nenhuma credencial, acesso interno ou
 sistema do governo é necessário.
 
-**Ler sem executar nada:** a pasta [`docs/`](docs/) traz a versão já renderizada
-de cada demonstrativo — narrativa, código, resultado e a conferência linha a
-linha contra o Diário Oficial, tudo em um único arquivo HTML que abre em
-qualquer navegador.
+**Ler sem executar nada:** os links no [início deste documento](#-leia-os-relatórios)
+abrem a versão já renderizada de cada demonstrativo — narrativa, código, resultado
+e a conferência linha a linha contra o Diário Oficial, em uma única página. Os
+mesmos arquivos estão na pasta [`docs/`](docs/), caso queira baixá-los.
 
 ---
 
