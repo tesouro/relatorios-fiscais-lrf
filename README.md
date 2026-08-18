@@ -45,7 +45,7 @@ Reproduzimos esse número usando só duas fontes públicas, sem qualquer acesso 
 - **SOF** (Secretaria de Orçamento Federal) — despesas empenhadas
 
 | Item | Calculado (R$ mil) | Oficial (R$ mil) | Diferença |
-|---|---|---|---|
+|---|---:|---:|---:|
 | Total de Receitas | 709.399.406 | 709.399.406 | 0,00% |
 | Total de Despesas | 1.030.366.445 | 1.030.366.445 | 0,00% |
 | **Resultado Previdenciário** | **-320.967.039** | **-320.967.039** | **0,00%** |
@@ -81,11 +81,11 @@ Links das fontes oficiais: [RREO Dezembro/2025](https://www.tesourotransparente.
 
 Cada demonstrativo é um documento Quarto autocontido em `standalones/`: a narrativa dos critérios normativos e o código que os implementa moram no mesmo arquivo, de ponta a ponta, sem necessidade de navegar para outro lugar do repositório.
 
-**Um achado do projeto: duas bases públicas cobrem quatro desses cinco demonstrativos.**
+**Um achado do projeto: uma única base de despesa cobre todos os demonstrativos testados.**
 
 - `dados/despesa_unificada.csv.gz` — uma única base de despesa (Siga Brasil), sem quebra por mês — alimenta **Despesa com saúde, Despesa com pessoal, Pessoal por elemento da despesa e as deduções da RCL**. Para o exercício fechado, o saldo anual acumulado é suficiente; não é preciso organizar dado por pasta mensal.
 - `dados/rcl_receita.csv.gz` — a **RCL** parte de receitas correntes, então precisa de uma base de receita própria. Sua única dedução medida pelo lado da despesa (Transferências Constitucionais) vem da **mesma base unificada** dos outros três, que passou a incluir Programa e os Restos a Pagar cancelados.
-- O **RGPS** (caso do item 1) usa suas próprias extrações (`dados/rgps/`) porque combina uma fonte de receita (Siga Brasil) com uma fonte de despesa diferente (SOF) — essa é uma característica específica do RGPS, não uma limitação geral da abordagem.
+- O **RGPS** (caso do item 1) foi o primeiro demonstrativo testado, ainda com fontes separadas: receita do Siga Brasil e despesa do Portal de Dados Abertos da SOF. As descobertas posteriores mostraram que ele também pode ser gerado a partir da base unificada — mantivemos as extrações originais (`dados/rgps/`) como registro do percurso e reconhecimento à SOF, fonte importante de dados abertos.
 
 Ou seja: não é preciso montar uma infraestrutura de dados nova para cada relatório — poucas bases públicas bem construídas já cobrem vários demonstrativos ao mesmo tempo.
 
