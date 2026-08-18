@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relatórios Fiscais da União a partir de Dados Públicos</title>
+<meta name="description" content="Reprodução de demonstrativos fiscais oficiais da União com código aberto e dados públicos, conferida contra o valor publicado no Diário Oficial.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700&family=Public+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#131A17;
+    --paper:#F7F6F2;
+    --rule:#CFCDC4;
+    --cinza:#5C625E;
+    --verde:#16624A;
+    --vermelho:#9C3B2A;
+    --max:64rem;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-size:17px;
+    line-height:1.6;
+  }
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 1.5rem}
+
+  /* ---------- topo ---------- */
+  .eyebrow{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:.72rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--cinza);
+  }
+  header{padding:3.5rem 0 0}
+  h1{
+    font-family:"Archivo",sans-serif;
+    font-weight:700;
+    font-size:clamp(2rem,5.5vw,3.4rem);
+    line-height:1.04;
+    letter-spacing:-.022em;
+    margin:.9rem 0 0;
+    max-width:20ch;
+  }
+  .lede{
+    font-size:clamp(1.05rem,2.2vw,1.22rem);
+    max-width:60ch;
+    margin:1.4rem 0 0;
+    color:#2A322E;
+  }
+
+  /* ---------- assinatura: a conferência ---------- */
+  .conferencia{
+    margin:3rem 0 0;
+    border-top:2px solid var(--ink);
+    border-bottom:1px solid var(--rule);
+    padding:1.3rem 0 1.5rem;
+  }
+  .conferencia h2{
+    font-family:"Public Sans",sans-serif;
+    font-size:.95rem;
+    font-weight:600;
+    margin:0 0 1.1rem;
+    color:var(--cinza);
+  }
+  .ledger{
+    width:100%;
+    border-collapse:collapse;
+    font-family:"IBM Plex Mono",monospace;
+    font-variant-numeric:tabular-nums;
+  }
+  .ledger th{
+    text-align:right;
+    font-weight:400;
+    font-size:.7rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--cinza);
+    padding:0 0 .5rem;
+    border-bottom:1px solid var(--rule);
+  }
+  .ledger th:first-child{text-align:left}
+  .ledger td{
+    text-align:right;
+    padding:.55rem 0;
+    font-size:clamp(.82rem,2.4vw,1rem);
+    border-bottom:1px solid var(--rule);
+  }
+  .ledger td:first-child{
+    text-align:left;
+    font-family:"Public Sans",sans-serif;
+    font-size:.95rem;
+  }
+  .ledger tr:last-child td{border-bottom:none;font-weight:500}
+  .resultado td{color:var(--vermelho)}
+  .zero{color:var(--verde);font-weight:500}
+  .nota{
+    font-size:.86rem;
+    color:var(--cinza);
+    margin:1rem 0 0;
+    max-width:64ch;
+  }
+
+  /* ---------- relatórios ---------- */
+  section{padding:3.5rem 0 0}
+  h2.secao{
+    font-family:"Archivo",sans-serif;
+    font-size:1.35rem;
+    letter-spacing:-.01em;
+    margin:0 0 .4rem;
+  }
+  .sub{color:var(--cinza);margin:0 0 2rem;max-width:58ch}
+  ul.relatorios{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
+  ul.relatorios li{border-bottom:1px solid var(--rule)}
+  a.item{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:.3rem 1.5rem;
+    align-items:baseline;
+    padding:1.25rem .25rem;
+    text-decoration:none;
+    color:inherit;
+    transition:background .18s ease,padding-left .18s ease;
+  }
+  a.item:hover,a.item:focus-visible{
+    background:#EFEDE6;
+    padding-left:.75rem;
+  }
+  a.item:focus-visible{outline:2px solid var(--verde);outline-offset:-2px}
+  .nome{font-family:"Archivo",sans-serif;font-weight:500;font-size:1.12rem}
+  .ref{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:.72rem;
+    letter-spacing:.06em;
+    color:var(--cinza);
+    text-transform:uppercase;
+    white-space:nowrap;
+  }
+  .desc{grid-column:1/-1;color:var(--cinza);font-size:.95rem;max-width:56ch}
+
+  /* ---------- como funciona ---------- */
+  .cols{display:grid;grid-template-columns:1fr;gap:1.75rem;margin-top:.5rem}
+  .col h3{
+    font-family:"Public Sans",sans-serif;
+    font-size:1rem;
+    margin:0 0 .35rem;
+  }
+  .col p{margin:0;color:var(--cinza);font-size:.95rem}
+  code{
+    font-family:"IBM Plex Mono",monospace;
+    font-size:.86em;
+    background:#EDEBE4;
+    padding:.12em .4em;
+    border-radius:2px;
+  }
+  a.link{color:var(--verde);text-decoration:underline;text-underline-offset:2px}
+  a.link:hover{color:var(--ink)}
+
+  .aviso{
+    margin-top:3.5rem;
+    border-left:3px solid var(--vermelho);
+    padding:.15rem 0 .15rem 1rem;
+    font-size:.95rem;
+    color:#2A322E;
+    max-width:62ch;
+  }
+  footer{
+    margin-top:3.5rem;
+    border-top:1px solid var(--rule);
+    padding:1.75rem 0 4rem;
+    font-size:.86rem;
+    color:var(--cinza);
+  }
+  footer p{margin:.4rem 0}
+
+  @media (min-width:46rem){
+    .cols{grid-template-columns:repeat(3,1fr);gap:2.25rem}
+    .desc{grid-column:1;max-width:52ch}
+  }
+
+  @media (prefers-reduced-motion:no-preference){
+    .reveal{animation:rise .5s cubic-bezier(.2,.6,.3,1) both}
+    .reveal:nth-child(2){animation-delay:.06s}
+    @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow reveal">Secretaria do Tesouro Nacional · CCONT/GEINF</p>
+    <h1 class="reveal">Contas públicas que qualquer pessoa pode refazer</h1>
+    <p class="lede">
+      Este projeto reproduz demonstrativos fiscais oficiais da União usando apenas
+      dados públicos e código aberto. Os números batem com o que a União publica
+      no Diário Oficial — e a conta está aberta para conferência.
+    </p>
+  </header>
+
+  <div class="conferencia">
+    <h2>Resultado previdenciário do RGPS, 2025 — em R$ mil</h2>
+    <table class="ledger">
+      <thead>
+        <tr>
+          <th scope="col">Item</th>
+          <th scope="col">Calculado aqui</th>
+          <th scope="col">Oficial</th>
+          <th scope="col">Diferença</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Total de receitas</td>
+          <td>709.399.406</td>
+          <td>709.399.406</td>
+          <td class="zero">0,00%</td>
+        </tr>
+        <tr>
+          <td>Total de despesas</td>
+          <td>1.030.366.445</td>
+          <td>1.030.366.445</td>
+          <td class="zero">0,00%</td>
+        </tr>
+        <tr class="resultado">
+          <td>Resultado previdenciário</td>
+          <td>−320.967.039</td>
+          <td>−320.967.039</td>
+          <td class="zero">0,00%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="nota">
+    O déficit da Previdência noticiado em janeiro de 2026 foi refeito a partir do
+    Siga Brasil (receitas) e do Portal de Dados Abertos da SOF (despesas), sem
+    acesso a nenhum sistema interno do governo.
+  </p>
+
+  <section>
+    <h2 class="secao">Os cinco demonstrativos</h2>
+    <p class="sub">
+      Cada página traz os critérios normativos em linguagem natural, o código que
+      os executa e a conferência contra o valor publicado. Não é preciso instalar
+      nada nem saber programar.
+    </p>
+
+    <ul class="relatorios">
+      <li>
+        <a class="item" href="rreo_a04_rgps.html">
+          <span class="nome">Resultado previdenciário</span>
+          <span class="ref">RREO Anexo 4</span>
+          <span class="desc">O déficit do RGPS, a previdência dos trabalhadores privados gerida pelo INSS.</span>
+        </a>
+      </li>
+      <li>
+        <a class="item" href="rreo_a03_rcl.html">
+          <span class="nome">Receita Corrente Líquida</span>
+          <span class="ref">RREO Anexo 3</span>
+          <span class="desc">A régua contra a qual se medem quase todos os limites da LRF, com cada dedução explicada.</span>
+        </a>
+      </li>
+      <li>
+        <a class="item" href="rreo_a12_saude.html">
+          <span class="nome">Despesa com saúde</span>
+          <span class="ref">RREO Anexo 12</span>
+          <span class="desc">Se a União aplicou o mínimo constitucional em ações e serviços públicos de saúde.</span>
+        </a>
+      </li>
+      <li>
+        <a class="item" href="rgf_a01_pessoal.html">
+          <span class="nome">Despesa com pessoal</span>
+          <span class="ref">RGF Anexo 1</span>
+          <span class="desc">Quanto a União gasta com folha, com as regras de inclusão e exclusão abertas uma a uma.</span>
+        </a>
+      </li>
+      <li>
+        <a class="item" href="rreo_t02_pessoal.html">
+          <span class="nome">Pessoal por elemento</span>
+          <span class="ref">RREO Tabela 2</span>
+          <span class="desc">O detalhamento da folha por tipo de despesa, com a separação entre civis e militares.</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="secao">Como isso funciona</h2>
+    <div class="cols">
+      <div class="col">
+        <h3>Dado público, só</h3>
+        <p>As bases vêm do Siga Brasil (Senado) e da SOF, e estão versionadas junto do código — o cálculo pode ser refeito daqui a anos com os mesmos números.</p>
+      </div>
+      <div class="col">
+        <h3>Critério antes do código</h3>
+        <p>Cada regra do Manual de Demonstrativos Fiscais aparece escrita em português logo antes da linha de código que a executa. É <em>literate programming</em> aplicado à contabilidade pública.</p>
+      </div>
+      <div class="col">
+        <h3>Conferência no fim</h3>
+        <p>Todo documento termina comparando o valor calculado com o publicado no Diário Oficial. Se divergir, aparece.</p>
+      </div>
+    </div>
+    <p class="nota">
+      Para executar por conta própria: basta R (≥ 4.1) e
+      <a class="link" href="https://quarto.org">Quarto</a>, e rodar
+      <code>quarto render standalones/</code>. Nenhuma credencial é necessária.
+      O código está no
+      <a class="link" href="https://github.com/tesouro/relatorios-fiscais-lrf">repositório no GitHub</a>.
+    </p>
+  </section>
+
+  <p class="aviso">
+    <strong>Projeto experimental.</strong> Esta é uma prova de conceito de
+    transparência fiscal, em caráter exploratório. A fonte oficial continua sendo
+    o que a União publica no Diário Oficial.
+  </p>
+
+  <footer>
+    <p>Coordenação-Geral de Contabilidade da União (CCONT) · Gerência de Informações Contábeis e Fiscais da União (GEINF) · Secretaria do Tesouro Nacional</p>
+    <p>Código sob licença MIT. Dados públicos, de livre uso.</p>
+  </footer>
+
+</div>
+</body>
+</html>
