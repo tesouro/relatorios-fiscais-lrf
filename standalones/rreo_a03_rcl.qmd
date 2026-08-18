@@ -7,6 +7,7 @@ format:
     toc: true
     code-fold: false
     theme: flatly
+    embed-resources: true     # <-- ACRESCENTAR
 execute:
   echo: true
   warning: false
@@ -397,7 +398,7 @@ cat("RCL oficial:  R$", format(rcl_oficial_mil, big.mark=".", decimal.mark=","),
 cat("Diferença:  R$", format(diferenca, big.mark=".", decimal.mark=","), "mil\n\n")
 
 if (diferenca == 0) {
-  cat("VALIDADO: bate centavo a centavo com o Diário Oficial.\n")
+  cat("VALIDADO: coincide com o valor publicado no Diário Oficial (R$ mil).\n")
 } else {
   cat("Diferença encontrada — investigar.\n")
 }
@@ -407,4 +408,4 @@ if (diferenca == 0) {
 
 A RCL de 2025 foi reproduzida a partir de dados **exclusivamente públicos** do Siga Brasil, seguindo os critérios do Manual de Demonstrativos Fiscais. Cada dedução foi calculada e explicada isoladamente, e o resultado final coincide com o valor oficial publicado no Diário Oficial.
 
-O ponto central para a área de contabilidade: **não há "caixa-preta"**. Cada número deste demonstrativo pode ser rastreado até uma regra explícita, e cada regra está escrita aqui em linguagem natural ao lado do código que a executa. Qualquer pessoa pode conferir, questionar ou adaptar um critério — que é justamente o que o *literate programming* busca oferecer à transparência fiscal.
+O ponto central para a área de contabilidade: **cada número deste demonstrativo pode ser rastreado até uma regra explícita**, e cada regra está escrita aqui em linguagem natural ao lado do código que a executa. Qualquer pessoa pode conferir, questionar ou adaptar um critério — que é justamente o que o *literate programming* busca oferecer à transparência fiscal.

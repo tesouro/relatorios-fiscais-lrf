@@ -7,6 +7,7 @@ format:
     toc: true
     code-fold: false
     theme: flatly
+    embed-resources: true     # <-- ACRESCENTAR
 execute:
   echo: true
   warning: false
@@ -356,7 +357,7 @@ cat("Oficial (mesma base):                      R$", format(oficial_mil, big.mar
 cat("Diferença:                                 R$", format(diferenca,   big.mark=".", decimal.mark=","), "mil\n\n")
 
 if (diferenca == 0) {
-  cat("VALIDADO: bate centavo a centavo com o Diário Oficial.\n")
+  cat("VALIDADO: coincide com o valor publicado no Diário Oficial (R$ mil).\n")
 } else {
   cat("Diferença encontrada — investigar.\n")
 }
@@ -374,4 +375,4 @@ A extensão para o valor integral, com os Restos a Pagar Não Processados, é im
 
 A Despesa com Pessoal consolidada de 2025, na sua parcela liquidada, foi reproduzida a partir de dados **exclusivamente públicos** e coincide com o valor oficial. Apesar da complexidade das regras — várias inclusões e exclusões previstas na LRF — cada critério está aqui explícito e nomeado, permitindo que qualquer pessoa confira ou questione uma regra específica.
 
-É esse o valor do *literate programming* para a transparência: a metodologia deixa de ser uma "caixa-preta" e passa a ser texto legível ao lado do código que a executa. E o mesmo vale para os limites do trabalho — o que ficou de fora está dito com todas as letras, no lugar em que o leitor vai procurar.
+É esse o valor do *literate programming* para a transparência: a metodologia é texto legível ao lado do código que a executa. E o mesmo vale para os limites do trabalho — o que ficou de fora está dito com todas as letras, no lugar em que o leitor vai procurar.

@@ -7,6 +7,7 @@ format:
     toc: true
     code-fold: false
     theme: flatly
+    embed-resources: true     # <-- ACRESCENTAR
 execute:
   echo: true
   warning: false
@@ -205,7 +206,7 @@ cat("ASPS oficiais:  R$", format(oficial_mil, big.mark=".", decimal.mark=","), "
 cat("Diferença:  R$", format(diferenca, big.mark=".", decimal.mark=","), "mil\n\n")
 
 if (diferenca == 0) {
-  cat("VALIDADO: bate centavo a centavo com o Diário Oficial.\n")
+  cat("VALIDADO: coincide com o valor publicado no Diário Oficial (R$ mil).\n")
 } else {
   cat("Diferença encontrada — investigar.\n")
 }
@@ -213,4 +214,4 @@ if (diferenca == 0) {
 
 # Conclusão
 
-A aplicação da União em saúde em 2025 foi reproduzida a partir de dados **exclusivamente públicos**, e coincide com o valor oficial. O critério central — o identificador de uso `6` — é uma marcação que o próprio SIAFI atribui às despesas de saúde, o que torna o cálculo direto e auditável: cada real contado tem uma origem rastreável, sem "caixa-preta".
+A aplicação da União em saúde em 2025 foi reproduzida a partir de dados **exclusivamente públicos**, e coincide com o valor oficial. O critério central — o identificador de uso `6` — é uma marcação que o próprio SIAFI atribui às despesas de saúde, o que torna o cálculo direto e auditável: cada real contado tem uma origem rastreável.

@@ -7,6 +7,7 @@ format:
     toc: true
     code-fold: false
     theme: flatly
+    embed-resources: true     # <-- ACRESCENTAR
 execute:
   echo: true
   warning: false
