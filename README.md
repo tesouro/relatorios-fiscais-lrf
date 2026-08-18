@@ -2,7 +2,7 @@
 
 Este repositório mostra, com código aberto, que é possível **reproduzir números oficiais das contas públicas federais usando apenas dados públicos** — sem acesso a sistemas internos do governo.
 
-Não é uma proposta teórica: os números abaixo batem, casa decimal por casa decimal, com o que a União publica oficialmente.
+Não é uma proposta teórica: os números abaixo coincidem com o que a União publica oficialmente, na unidade em que os valores são divulgados (R$ mil).
 
 > **Projeto experimental / piloto.** Esta é uma prova de conceito de transparência fiscal, em caráter exploratório. O objetivo é demonstrar a viabilidade da abordagem, não substituir os demonstrativos oficiais — a fonte oficial continua sendo o que a União publica no Diário Oficial.
 
@@ -17,7 +17,7 @@ valor publicado no Diário Oficial:
 | [**RGPS** — RREO Anexo 4](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_a04_rgps.html) | Déficit da Previdência do INSS |
 | [**RCL** — RREO Anexo 3](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_a03_rcl.html) | Receita Corrente Líquida, a "régua" dos limites fiscais |
 | [**Despesa com saúde** — RREO Anexo 12](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_a12_saude.html) | Se a União aplicou o mínimo constitucional em saúde |
-| [**Despesa com pessoal** — RGF Anexo 1](https://tesouro.github.io/relatorios-fiscais-lrf/rgf_a01_pessoal.html) | Quanto a União gasta com folha, nos três Poderes |
+| [**Despesa com pessoal** — RGF Anexo 1](https://tesouro.github.io/relatorios-fiscais-lrf/rgf_a01_pessoal.html) | Quanto a União gasta com folha, no consolidado |
 | [**Pessoal por elemento** — RREO Tabela 2](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_t02_pessoal.html) | Detalhamento da folha por tipo de despesa |
 
 O restante deste documento explica como esses números foram obtidos e por que
@@ -25,11 +25,13 @@ isso importa.
 
 ## Por que é inovador
 
-Até onde levantamos, **não há registro de outro governo ou ente — no Brasil ou no exterior — que disponibilize, de forma aberta e conjunta, os dados e o código capazes de reproduzir seus demonstrativos fiscais oficiais, validados contra o valor publicado.**
+Não identificamos, no levantamento realizado, iniciativa governamental — no Brasil ou no exterior — que publique em conjunto os dados, o código e a conferência capazes de reproduzir seus próprios demonstrativos fiscais oficiais. Se houver, temos interesse em conhecer.
 
-Existem iniciativas próximas, mas com propósito diferente. Portais de dados abertos (no Brasil e no mundo) publicam os *dados* de execução, mas não a lógica de cálculo que transforma esses dados no demonstrativo oficial. Ferramentas de "regras como código" — como o [OpenFisca](https://openfisca.org), adotado por vários países — transformam a *legislação* tributária e de benefícios em código para *simular* políticas ("e se mudarmos essa regra?"), mas não reproduzem demonstrativos fiscais já publicados a partir da execução orçamentária real.
+Existem iniciativas próximas, com propósitos distintos. Pacotes do ecossistema R brasileiro — `tesouror`, `siconfir`, `RREORGFdataR` — dão acesso ágil às APIs do SICONFI e entregam o demonstrativo **já consolidado, na linha do anexo, como o ente o declarou**. São excelentes para análise comparativa entre entes, mas partem do resultado: a regra que transformou a execução naquele número permanece fora do alcance de quem consulta. Portais de dados abertos fazem o inverso — publicam a execução, sem a lógica que a converte em demonstrativo. Ferramentas de "regras como código", como o [OpenFisca](https://openfisca.org), codificam a *legislação* para *simular* políticas, não para reproduzir demonstrativos a partir da execução real.
 
-O recorte deste projeto é específico: partir de dado público de execução e chegar, com código aberto e auditável, exatamente ao número que o Tesouro publicou — conferível centavo a centavo.
+O recorte deste projeto é o trecho que falta entre os dois: partir do dado público de execução e chegar, com código aberto e auditável, exatamente ao número que o Tesouro publicou.
+
+**E o que está aqui é uma amostra.** Já existe um pipeline interno, em Microsoft Fabric, que gera todos os anexos do RREO e do RGF com essa mesma abordagem — cada notebook documentado e conferido contra o Diário Oficial. Os cinco demonstrativos abaixo são os que a base pública disponível hoje permite reproduzir; o restante já está construído, aguardando apenas dado público com a granularidade necessária.
 
 ---
 
@@ -48,7 +50,7 @@ Reproduzimos esse número usando só duas fontes públicas, sem qualquer acesso 
 | Total de Despesas | 1.030.366.445 | 1.030.366.445 | 0,00% |
 | **Resultado Previdenciário** | **-320.967.039** | **-320.967.039** | **0,00%** |
 
-O resultado bate, centavo a centavo, com o que o Tesouro Nacional publicou oficialmente — o mesmo número que chegou ao Jornal Nacional. Ou seja: qualquer pessoa, sem acesso a sistema interno nenhum, pode chegar ao mesmo resultado — basta saber onde procurar o dado e como aplicar os critérios corretos.
+O resultado coincide com o que o Tesouro Nacional publicou oficialmente — o mesmo número que chegou ao Jornal Nacional. Ou seja: qualquer pessoa, sem acesso a sistema interno nenhum, pode chegar ao mesmo resultado — basta saber onde procurar o dado e como aplicar os critérios corretos.
 
 **Onde está no repositório:**
 
@@ -57,7 +59,7 @@ O resultado bate, centavo a centavo, com o que o Tesouro Nacional publicou ofici
 - Dados de entrada: `dados/rgps/receita_siga.xlsx` e `dados/rgps/despesa_sof.xlsx`
 - Demonstrativo oficial para conferência: [RREO — Dezembro/2025](https://www.tesourotransparente.gov.br/publicacoes/relatorio-resumido-da-execucao-orcamentaria-rreo/2025/12) (RREO Anexo 4)
 
-**Por que isso importa:** o cidadão, o jornalista, o parlamentar — qualquer um — pode auditar essa conta independentemente do governo. A confiança no número não depende de "confiar no Tesouro"; ela pode ser verificada.
+**Por que isso importa:** o cidadão, o jornalista, o parlamentar — qualquer um — pode auditar essa conta independentemente do governo. A confiança no número se reforça porque ele pode ser verificado de forma independente.
 
 ---
 
@@ -65,14 +67,14 @@ O resultado bate, centavo a centavo, com o que o Tesouro Nacional publicou ofici
 
 Se conseguimos reproduzir o RGPS, o que mais dá para reproduzir com dado público?
 
-Testamos e validamos **mais quatro demonstrativos exigidos pela Lei de Responsabilidade Fiscal (LRF)**, convergência centavo a centavo com o Diário Oficial (exercício 2025) — com uma diferença residual de arredondamento na Tabela 2, documentada no próprio arquivo:
+Testamos e validamos **mais quatro demonstrativos exigidos pela Lei de Responsabilidade Fiscal (LRF)**, com convergência com os valores publicados no Diário Oficial (exercício 2025), na unidade em que são divulgados — com uma diferença residual de arredondamento na Tabela 2, documentada no próprio arquivo:
 
 | Demonstrativo | O que mede, em uma frase | Ler online | Fonte oficial para conferência |
 |---|---|---|---|
 | **RGPS** (RREO Anexo 4) | Déficit da Previdência do INSS | [abrir](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_a04_rgps.html) | RREO Dezembro/2025 |
 | **RCL** (RREO Anexo 3) | Receita Corrente Líquida — a "régua" usada para medir limites fiscais | [abrir](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_a03_rcl.html) | RREO Dezembro/2025 |
 | **Despesa com saúde** (RREO Anexo 12) | Se a União aplicou o mínimo constitucional em saúde | [abrir](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_a12_saude.html) | RREO Dezembro/2025 |
-| **Despesa com pessoal** (RGF Anexo 1, total consolidado) | Quanto a União gasta com folha de pagamento, nos três Poderes | [abrir](https://tesouro.github.io/relatorios-fiscais-lrf/rgf_a01_pessoal.html) | RGF 2025 — Consolidado |
+| **Despesa com pessoal** (RGF Anexo 1, total consolidado) | Quanto a União gasta com folha de pagamento, no consolidado dos três Poderes | [abrir](https://tesouro.github.io/relatorios-fiscais-lrf/rgf_a01_pessoal.html) | RGF 2025 — Consolidado |
 | **Pessoal por elemento da despesa** (RREO Tabela 2) | Detalhamento da folha por tipo de despesa | [abrir](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_t02_pessoal.html) | RREO Dezembro/2025 |
 
 Links das fontes oficiais: [RREO Dezembro/2025](https://www.tesourotransparente.gov.br/publicacoes/relatorio-resumido-da-execucao-orcamentaria-rreo/2025/12) · [RGF 2025 Consolidado](https://www.tesourotransparente.gov.br/publicacoes/relatorio-de-gestao-fiscal-rgf/2025/31)
@@ -90,19 +92,28 @@ Ou seja: não é preciso montar uma infraestrutura de dados nova para cada relat
 **Duas lições que valem para a direção:**
 
 - **Publicar dado não é o mesmo que garantir reprodutibilidade.** O Siga Brasil e a SOF já existem e já são públicos — o que faltava não era o dado, era a lógica de cálculo (os critérios, os filtros, as exceções). Isso está tudo neste repositório, documentado e auditável.
-- **Código aberto (R) é auditável; planilha fechada não é.** Qualquer pessoa pode ler exatamente como cada número foi calculado, linha por linha — diferente de uma "caixa-preta" onde é preciso confiar sem verificar.
+- **O código aberto torna cada critério inspecionável.** Qualquer pessoa pode acompanhar como o número foi calculado, linha por linha, do dado bruto ao valor publicado.
 
 **Onde está no repositório:** pasta [`standalones/`](standalones/) — um documento Quarto por demonstrativo.
 
 ---
 
-## 3. O potencial: o motor completo já existe e já foi testado
+## 3. O motor completo: o que já está pronto
 
-Os cinco demonstrativos acima usam só dado público. Mas, internamente, a STN já opera um **pipeline completo em Microsoft Fabric** — testado e validado centavo a centavo contra os valores oficiais do Diário Oficial — que gera **todos** os anexos do RREO e do RGF, não só esses cinco.
+Os cinco demonstrativos acima são o que a base pública disponível hoje permite reproduzir. O pipeline interno vai bem além disso.
 
-Isso quer dizer: **a limitação hoje não é o código, é a disponibilidade de dado público equivalente** para os demais anexos, que hoje dependem de granularidade só disponível no Tesouro Gerencial (saldo de conta contábil, conta corrente por entidade, Unidade Gestora). Se, no futuro, essas bases forem abertas, a lógica de cálculo para replicar os anexos restantes já está pronta e testada — é só conectar.
+São **17 notebooks em R**, executados em Microsoft Fabric sobre SparkR e Delta Lake, cobrindo o conjunto dos anexos do RREO e do RGF hoje elaborados pelo Tesouro Nacional:
 
-Esse pipeline interno opera sobre extrações do Tesouro Gerencial, que não são públicas — por isso não integra este repositório, cujo escopo é deliberadamente o que qualquer pessoa consegue reproduzir com dado aberto.
+- **RREO** — Anexos 1, 2, 3, 4, 6, 7, 8, 9 e 12, e Tabelas 1, 2 e 3
+- **RGF** — Anexos 1 a 5
+
+Cada notebook segue a mesma abordagem deste repositório: o critério do MDF escrito em português, o código que o executa logo abaixo, e a conferência contra o valor publicado no Diário Oficial.
+
+E não é só o cálculo. Sobre a mesma base já operam o modelo semântico em **Power BI (Direct Lake)**, a **validação cruzada entre RREO e RGF**, a construção de **série histórica** e o compartilhamento dos dados com outras áreas do Tesouro — tudo a partir de uma fonte única, sem replanilhamento.
+
+**A limitação hoje não é o código, é a granularidade do dado público.** Os anexos que não estão neste repositório dependem de atributos hoje disponíveis apenas no Tesouro Gerencial — entre outros, saldo de conta contábil, conta corrente por entidade, Unidade Gestora, situação do evento contábil e fonte de recursos por conta contábil. Na medida em que dados com essa granularidade venham a estar disponíveis publicamente, a lógica de cálculo correspondente já está construída e testada.
+
+Esse pipeline opera sobre extrações do Tesouro Gerencial, que não são públicas — por isso não integra este repositório, cujo escopo é deliberadamente o que qualquer pessoa consegue reproduzir com dado aberto.
 
 ---
 
@@ -121,6 +132,7 @@ relatorios-fiscais-lrf/
 │   ├── rcl_receita.csv.gz         # receita 2025 (RCL)
 │   └── rgps/                      # bases próprias do RGPS (Siga Brasil + SOF)
 ├── docs/                          # versões em HTML, publicadas em tesouro.github.io/relatorios-fiscais-lrf
+├── LICENSE
 └── README.md
 ```
 
@@ -165,4 +177,4 @@ Os documentos **Quarto executáveis** (`.qmd`) são a expressão mais completa d
 
 ## Licença
 
-Código sob licença MIT. Dados públicos, de livre uso.
+Código sob [licença MIT](LICENSE). Dados públicos, de livre uso.
