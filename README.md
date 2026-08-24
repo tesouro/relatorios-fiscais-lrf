@@ -4,7 +4,7 @@ Este repositório mostra, com código aberto, que é possível **reproduzir núm
 
 Não é uma proposta teórica: os números abaixo coincidem com o que a União publica oficialmente, na unidade em que os valores são divulgados (R$ mil).
 
-> **Projeto experimental / piloto.** Esta é uma prova de conceito de transparência fiscal, em caráter exploratório. O objetivo é demonstrar a viabilidade da abordagem, não substituir os demonstrativos oficiais — a fonte oficial continua sendo o que a União publica no Diário Oficial.
+> **Projeto experimental / piloto.** Esta é uma prova de conceito de transparência fiscal, em caráter exploratório. O objetivo é demonstrar a viabilidade da abordagem, não substituir os demonstrativos oficiais — a fonte oficial continua sendo o que a União publica no Diário Oficial. O que se demonstra aqui é a **reprodutibilidade computacional** dos valores publicados: a interpretação normativa de cada critério é a do Manual de Demonstrativos Fiscais e permanece aberta à discussão.
 
 ## 📄 Leia os relatórios
 
@@ -50,6 +50,8 @@ Reproduzimos esse número usando só duas fontes públicas, sem qualquer acesso 
 | Total de Despesas | 1.030.366.445 | 1.030.366.445 | 0,00% |
 | **Resultado Previdenciário** | **-320.967.039** | **-320.967.039** | **0,00%** |
 
+A diferença é apurada após o arredondamento para R$ mil, unidade em que o Diário Oficial publica. Antes do arredondamento restam frações de milhar — da ordem de algumas centenas de reais sobre valores de centenas de bilhões —, próprias do ruído de ponto flutuante das bases de origem.
+
 O resultado coincide com o que o Tesouro Nacional publicou oficialmente — o mesmo número que chegou ao Jornal Nacional. Ou seja: qualquer pessoa, sem acesso a sistema interno nenhum, pode chegar ao mesmo resultado — basta saber onde procurar o dado e como aplicar os critérios corretos.
 
 **Onde está no repositório:**
@@ -86,7 +88,7 @@ Cada demonstrativo é um documento Quarto autocontido em `standalones/`: a narra
 Cada limitação abaixo já está documentada no arquivo correspondente. Estão reunidas aqui para leitura rápida — e porque um projeto que declara onde o dado público esbarra na apuração interna é mais útil do que um que só mostra o que fechou.
 
 - **Despesa com pessoal (RGF Anexo 1) — escopo parcial.** Apura-se apenas a despesa *liquidada*. Os Restos a Pagar Não Processados, que integram a despesa com pessoal para fins do limite da LRF, não entram no cálculo; tampouco se apresenta a razão DTP/RCL ou a apuração de cumprimento dos arts. 19 e 20. A comparação é de valores, contra a parcela liquidada publicada no Diário Oficial. Os RP Não Processados estão disponíveis na base pública: a extensão é imediata a partir do mesmo pipeline.
-- **Pessoal por elemento (Tabela 2) — granularidade do órgão.** A apuração oficial separa Civil × Militar pelo *órgão máximo* da Unidade Gestora executora; a base pública do Siga Brasil expõe o *órgão superior*. Os dois coincidem para a maioria dos casos — o total geral bate —, mas resta uma diferença de ~0,06% em dois itens da fronteira Civil/Militar. É uma limitação estrutural do dado público disponível, não um erro de fórmula.
+- **Pessoal por elemento (Tabela 2) — hierarquia de órgão no Ministério da Defesa.** A apuração oficial separa Civil × Militar pelo órgão máximo da Unidade Gestora executora. Em 45 dos 49 órgãos máximos da União isso é indiferente, porque órgão máximo e órgão superior coincidem. No Ministério da Defesa, não: o MD é o órgão máximo, enquanto Comando da Marinha, do Exército e da Aeronáutica são órgãos superiores. A base pública expõe o órgão superior, e é dessa assimetria — restrita ao perímetro da Defesa — que vem a diferença de ~0,06% em dois itens da fronteira Civil/Militar. O total geral bate.
 - **Despesa com saúde (Anexo 12) — critério de dimensão única.** O cálculo apoia-se no identificador de uso `6`, marcação que o próprio SIAFI atribui à despesa. É o critério do demonstrativo oficial e é rastreável, mas o dado público não oferece, hoje, uma segunda dimensão independente para conferir a marcação registro a registro.
 - **Exaustividade das classificações — não testada automaticamente.** As regras reproduzem os valores oficiais, mas o repositório ainda não demonstra, de forma automatizada, que a classificação cobre 100% da base e que os critérios são mutuamente exclusivos. Coincidir com o oficial é evidência forte de correção computacional; não é, sozinho, prova de que cada premissa classificatória seja a única leitura possível do Manual de Demonstrativos Fiscais. Auditar as regras — e não apenas os números — é o próximo passo, e é o tipo de discussão que este repositório existe para permitir.
 - **Recorte temporal e unidade.** Exercício de 2025, encerrado. Os valores oficiais usados na conferência estão registrados no corpo de cada documento; a comparação é feita em R$ mil, unidade em que o Diário Oficial publica.
@@ -121,9 +123,9 @@ Cada notebook segue a mesma abordagem deste repositório: o critério do MDF esc
 
 E não é só o cálculo. Sobre a mesma base já operam o modelo semântico em **Power BI (Direct Lake)**, a **validação cruzada entre RREO e RGF**, a construção de **série histórica** e o compartilhamento dos dados com outras áreas do Tesouro — tudo a partir de uma fonte única, sem replanilhamento.
 
-**A limitação hoje não é o código, é a granularidade do dado público.** Os anexos que não estão neste repositório dependem de atributos hoje disponíveis apenas no Tesouro Gerencial — entre outros, saldo de conta contábil, conta corrente por entidade, Unidade Gestora, situação do evento contábil e fonte de recursos por conta contábil. Na medida em que dados com essa granularidade venham a estar disponíveis publicamente, a lógica de cálculo correspondente já está construída e testada.
+**A limitação hoje não é o código, é a granularidade do dado público.** Os anexos que não estão neste repositório dependem de atributos hoje disponíveis apenas no Tesouro Gerencial — entre outros, saldo de conta contábil, conta corrente por entidade, situação do evento contábil e fonte de recursos por conta contábil. Na medida em que dados com essa granularidade venham a estar disponíveis publicamente, a lógica de cálculo correspondente já está construída e testada.
 
-Esse pipeline opera sobre extrações do Tesouro Gerencial, que não são públicas — por isso não integra este repositório, cujo escopo é deliberadamente o que qualquer pessoa consegue reproduzir com dado aberto.
+Esse pipeline opera sobre extrações do Tesouro Gerencial, que não são públicas — por isso não integra este repositório, cujo escopo é deliberadamente o que qualquer pessoa consegue reproduzir com dado aberto. As informações desta seção servem à contextualização arquitetural: por dependerem de dado não público, não são verificáveis por quem não tem acesso ao Tesouro Gerencial, e nada do que se afirma aqui é pressuposto dos cinco demonstrativos acima.
 
 ---
 
