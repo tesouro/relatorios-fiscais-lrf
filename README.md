@@ -17,7 +17,7 @@ valor publicado no Diário Oficial:
 | [**RGPS** — RREO Anexo 4](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_a04_rgps.html) | Déficit da Previdência do INSS |
 | [**RCL** — RREO Anexo 3](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_a03_rcl.html) | Receita Corrente Líquida, a "régua" dos limites fiscais |
 | [**Despesa com saúde** — RREO Anexo 12](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_a12_saude.html) | Se a União aplicou o mínimo constitucional em saúde |
-| [**Despesa com pessoal** — RGF Anexo 1](https://tesouro.github.io/relatorios-fiscais-lrf/rgf_a01_pessoal.html) | Quanto a União gasta com folha, no consolidado |
+| [**Despesa com pessoal** — RGF Anexo 1](https://tesouro.github.io/relatorios-fiscais-lrf/rgf_a01_pessoal.html) | Quanto a União gasta com folha, no consolidado (parcela liquidada) |
 | [**Pessoal por elemento** — RREO Tabela 2](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_t02_pessoal.html) | Detalhamento da folha por tipo de despesa |
 
 O restante deste documento explica como esses números foram obtidos e por que
@@ -67,19 +67,29 @@ O resultado coincide com o que o Tesouro Nacional publicou oficialmente — o me
 
 Se conseguimos reproduzir o RGPS, o que mais dá para reproduzir com dado público?
 
-Testamos e validamos **mais quatro demonstrativos exigidos pela Lei de Responsabilidade Fiscal (LRF)**, com convergência com os valores publicados no Diário Oficial (exercício 2025), na unidade em que são divulgados — com uma diferença residual de arredondamento na Tabela 2, documentada no próprio arquivo:
+Testamos e validamos **mais quatro demonstrativos exigidos pela Lei de Responsabilidade Fiscal (LRF)**, com convergência com os valores publicados no Diário Oficial (exercício 2025), na unidade em que são divulgados — com uma diferença residual de arredondamento na Tabela 2, da ordem de R$ 4 mil sobre R$ 431,7 bilhões, documentada no próprio arquivo:
 
 | Demonstrativo | O que mede, em uma frase | Ler online | Fonte oficial para conferência |
 |---|---|---|---|
 | **RGPS** (RREO Anexo 4) | Déficit da Previdência do INSS | [abrir](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_a04_rgps.html) | RREO Dezembro/2025 |
 | **RCL** (RREO Anexo 3) | Receita Corrente Líquida — a "régua" usada para medir limites fiscais | [abrir](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_a03_rcl.html) | RREO Dezembro/2025 |
 | **Despesa com saúde** (RREO Anexo 12) | Se a União aplicou o mínimo constitucional em saúde | [abrir](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_a12_saude.html) | RREO Dezembro/2025 |
-| **Despesa com pessoal** (RGF Anexo 1, total consolidado) | Quanto a União gasta com folha de pagamento, no consolidado dos três Poderes | [abrir](https://tesouro.github.io/relatorios-fiscais-lrf/rgf_a01_pessoal.html) | RGF 2025 — Consolidado |
+| **Despesa com pessoal** (RGF Anexo 1, total consolidado) | Quanto a União gasta com folha de pagamento, no consolidado dos três Poderes — apurada aqui na **parcela liquidada**, sem Restos a Pagar Não Processados ([por quê](https://tesouro.github.io/relatorios-fiscais-lrf/rgf_a01_pessoal.html#nota-metodológica)) | [abrir](https://tesouro.github.io/relatorios-fiscais-lrf/rgf_a01_pessoal.html) | RGF 2025 — Consolidado |
 | **Pessoal por elemento da despesa** (RREO Tabela 2) | Detalhamento da folha por tipo de despesa | [abrir](https://tesouro.github.io/relatorios-fiscais-lrf/rreo_t02_pessoal.html) | RREO Dezembro/2025 |
 
 Links das fontes oficiais: [RREO Dezembro/2025](https://www.tesourotransparente.gov.br/publicacoes/relatorio-resumido-da-execucao-orcamentaria-rreo/2025/12) · [RGF 2025 Consolidado](https://www.tesourotransparente.gov.br/publicacoes/relatorio-de-gestao-fiscal-rgf/2025/31)
 
 Cada demonstrativo é um documento Quarto autocontido em `standalones/`: a narrativa dos critérios normativos e o código que os implementa moram no mesmo arquivo, de ponta a ponta, sem necessidade de navegar para outro lugar do repositório.
+
+### Limitações conhecidas
+
+Cada limitação abaixo já está documentada no arquivo correspondente. Estão reunidas aqui para leitura rápida — e porque um projeto que declara onde o dado público esbarra na apuração interna é mais útil do que um que só mostra o que fechou.
+
+- **Despesa com pessoal (RGF Anexo 1) — escopo parcial.** Apura-se apenas a despesa *liquidada*. Os Restos a Pagar Não Processados, que integram a despesa com pessoal para fins do limite da LRF, não entram no cálculo; tampouco se apresenta a razão DTP/RCL ou a apuração de cumprimento dos arts. 19 e 20. A comparação é de valores, contra a parcela liquidada publicada no Diário Oficial. Os RP Não Processados estão disponíveis na base pública: a extensão é imediata a partir do mesmo pipeline.
+- **Pessoal por elemento (Tabela 2) — granularidade do órgão.** A apuração oficial separa Civil × Militar pelo *órgão máximo* da Unidade Gestora executora; a base pública do Siga Brasil expõe o *órgão superior*. Os dois coincidem para a maioria dos casos — o total geral bate —, mas resta uma diferença de ~0,06% em dois itens da fronteira Civil/Militar. É uma limitação estrutural do dado público disponível, não um erro de fórmula.
+- **Despesa com saúde (Anexo 12) — critério de dimensão única.** O cálculo apoia-se no identificador de uso `6`, marcação que o próprio SIAFI atribui à despesa. É o critério do demonstrativo oficial e é rastreável, mas o dado público não oferece, hoje, uma segunda dimensão independente para conferir a marcação registro a registro.
+- **Exaustividade das classificações — não testada automaticamente.** As regras reproduzem os valores oficiais, mas o repositório ainda não demonstra, de forma automatizada, que a classificação cobre 100% da base e que os critérios são mutuamente exclusivos. Coincidir com o oficial é evidência forte de correção computacional; não é, sozinho, prova de que cada premissa classificatória seja a única leitura possível do Manual de Demonstrativos Fiscais. Auditar as regras — e não apenas os números — é o próximo passo, e é o tipo de discussão que este repositório existe para permitir.
+- **Recorte temporal e unidade.** Exercício de 2025, encerrado. Os valores oficiais usados na conferência estão registrados no corpo de cada documento; a comparação é feita em R$ mil, unidade em que o Diário Oficial publica.
 
 **Um achado do projeto: uma única base de despesa cobre todos os demonstrativos testados.**
 
