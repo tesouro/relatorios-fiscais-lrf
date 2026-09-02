@@ -43,25 +43,34 @@ The rest of this document explains how those figures were obtained and why it ma
 
 ## Why this is different
 
-In the search we conducted, we did not identify a government initiative — in Brazil or abroad — that publishes **together** the data, the code and the reconciliation needed to reproduce its own official fiscal statements. If one exists, we would like to hear about it.
+In the search we conducted, we did not identify a government initiative — in Brazil or abroad — that publishes **together** the public source data, the reconstruction code and an explicit reconciliation, sufficient to reproduce its own official fiscal statements. If one exists, we would like to hear about it.
 
 There are neighbouring initiatives with different purposes. It is worth setting out how each of them differs, because each is instructive in its own right.
 
 ### Rules as Code: Catala and OpenFisca
 
-[**Catala**](https://catala-lang.org) (Inria, France) is the closest relative to this project's *method*. It is a domain-specific language built for socio-fiscal legislative literate programming: each paragraph of statutory text is annotated with the code that formalises it, and the compiler either extracts the executable program (*tangling*) or produces a lawyer-readable document (*weaving*). It was designed together with legal scholars, embeds *default logic* — the "definition under conditions" structure that pervades statutory drafting — as a first-class feature, and parts of its compiler have been formally verified. It grew out of technology-transfer work with the DGFiP on the French income tax computation. Formalising French family benefits in Catala surfaced a bug in the official implementation.
+[**Catala**](https://catala-lang.org) (Inria, France) is the closest *conceptual* relative to this project's approach. It is a domain-specific language built for socio-fiscal legislative literate programming: each paragraph of statutory text is annotated with the code that formalises it, and the compiler either extracts the executable program (*tangling*) or produces a lawyer-readable document (*weaving*). It was designed together with legal scholars, embeds *default logic* — the general-rule-with-exceptions structure that pervades statutory drafting — as a first-class language feature, and the correctness of its core compilation steps has been formally proved using the F\* proof assistant. It grew out of technology-transfer work with the DGFiP on the French income tax computation. Formalising French family benefits in Catala surfaced a bug in the official implementation.
 
-Catala is a far more rigorous instrument than what we use here. Quarto is not a verified compiler and R is not a legal DSL. But the premise is shared, and worth stating plainly: **the faithfulness between rule and code should be readable by the domain expert, not taken on trust from the implementer.** Where we differ is in the object. Catala formalises the *legislative text* in order to *compute* an entitlement for a given case. We start from *executed budget data* and reconstruct an *aggregate statement that has already been published*.
+Catala is a far more rigorous instrument than what we use here. Quarto is not a verified compiler and R is not a legal DSL — the *Manual de Demonstrativos Fiscais* has the same general-rule-with-exceptions structure, but we handle it with ordinary conditional logic, and we make no claim of formal equivalence. The premise, however, is shared, and worth stating plainly: **the faithfulness between rule and code should be readable by the domain expert, not taken on trust from the implementer.**
+
+Where we differ is in the object. Catala formalises *substantive law* — who is entitled to what — in order to compute an outcome for a given case. This project operationalises *public finance rules of a procedural nature*: the MDF's rules of aggregation and reporting, applied to budget execution that has already occurred, in order to reconstruct an aggregate statement that has already been published.
 
 [**OpenFisca**](https://openfisca.org), also French in origin and now used across several continents, sits on the same axis: it encodes *legislation* in order to *simulate* policy, not to reproduce published statements from actual execution.
 
 ### Reproducible Analytical Pipelines (United Kingdom)
 
-The closest *operational* relative. Developed in 2017 by the Department for Culture, Media and Sport with the Government Digital Service, and since promoted across the Government Statistical Service, RAP was a response to a problem we recognise exactly: official statistics produced through slow, error-prone manual processes, with heavy reliance on spreadsheets and proprietary tools. Its minimum standard — no manual copy-paste steps, open-source languages, version control, code published where possible, embedded documentation, quality assurance written into the code, peer review — is the standard this repository was built to meet.
+The closest *operational* relative. Developed in 2017 by the Department for Culture, Media and Sport with the Government Digital Service, and since promoted across the Government Statistical Service, RAP was a response to a problem we recognise exactly: official statistics produced through slow, error-prone manual processes, with heavy reliance on spreadsheets and proprietary tools. Its core principles — minimising manual steps, open-source tools, version control as an audit trail, embedded documentation and quality assurance, peer review — are closely aligned with the standard this repository was built to meet.
 
-The difference in scope is worth being precise about, because it is narrow. RAP addresses how a producer builds *its own* pipeline reproducibly, and several UK statistical outputs do publish that pipeline's code. What is added here is the second half: an **independent reconstruction from third-party open data, reconciled line by line against the figure the government published**. A reader can verify the result without trusting either the code's author or the producing institution.
+The difference in scope is worth being precise about, because it is narrow. RAP addresses how a producer builds *its own* pipeline reproducibly, and several UK statistical outputs do publish that pipeline's code. What is added here is the second half — what we will call, throughout this document, **independent reconstruction**:
 
-The UK experience is also instructive about what does *not* work: the Office for Statistics Regulation's 2021 review is largely about barriers to adoption, not about technology.
+- **Reproducibility (RAP):** the same data, the same code and the same pipeline yield the same result.
+- **Independent reconstruction (here):** public execution data, plus the normative criteria, plus an implementation written from scratch, yield the result the government published.
+
+The second does not depend on reproducing the producer's internal pipeline at all. It is closer to an independent computational audit than to the replication of an analysis.
+
+One feature of the Brazilian arrangement sharpens this. The data sources — Siga Brasil, maintained by the Federal Senate, and SOF, in the Ministry of Planning — are institutionally distinct from the body that publishes the statement, the National Treasury in the Ministry of Finance. The reconstruction therefore crosses an institutional boundary, and the reconciliation is in effect a consistency test between what one institution discloses and what another publishes.
+
+The UK experience is also instructive about the limits of technology on its own. The Office for Statistics Regulation's 2021 review is largely about barriers to adoption — tools, training, time, capability, organisational support — rather than about the approach itself.
 
 ### Reproducibility in official statistics (France)
 
@@ -131,7 +140,7 @@ Each statement is a self-contained Quarto document in `standalones/`: the narrat
 
 Each limitation below is already documented in the corresponding file. They are gathered here for quick reading — and because a project that states where public data runs into internal accounting is more useful than one that only shows what tied out.
 
-- **Personnel expenditure (RGF Annex 1) — partial scope.** Only *accrued* (*liquidada*) expenditure is measured. Unprocessed carry-over commitments (*Restos a Pagar Não Processados*), which form part of personnel expenditure for the purposes of the LRF ceiling, are not included; nor do we present the DTP/RCL ratio or the compliance assessment under LRF arts. 19 and 20. The comparison is of values, against the accrued portion published in the Official Gazette. The carry-over data is available in the public base: the extension is immediate from the same pipeline.
+- **Personnel expenditure (RGF Annex 1) — partial scope.** Only *accrued* (*liquidada*) expenditure is measured. Unprocessed carry-over commitments (*Restos a Pagar Não Processados*), which form part of personnel expenditure for the purposes of the LRF ceiling, are not included; because of that exclusion the base measured here is narrower than *Despesa Total com Pessoal* (DTP) as defined for the ceiling, and we therefore present neither the DTP/RCL ratio nor the compliance assessment under LRF arts. 19 and 20. The comparison is of values, against the accrued portion published in the Official Gazette. The carry-over data is available in the public base: the extension is immediate from the same pipeline.
 - **Personnel by element (Table 2) — agency hierarchy in the Ministry of Defence.** The official calculation separates civilian from military staff by the top-level agency of the executing spending unit. For 45 of the Union's 49 top-level agencies this makes no difference, because top-level and superior agency coincide. In the Ministry of Defence they do not: the MD is the top-level agency, while the Navy, Army and Air Force Commands are superior agencies. The public base exposes the superior agency, and it is from this asymmetry — confined to the defence perimeter — that a ~0.06% difference arises in two items on the civilian/military boundary. The grand total matches.
 - **Health expenditure (Annex 12) — single-dimension criterion.** The calculation rests on use identifier `6`, a flag assigned by SIAFI itself to the expenditure. It is the criterion of the official statement and it is traceable, but public data does not currently offer a second independent dimension to verify the flag record by record.
 - **Exhaustiveness of classifications — not automatically tested.** The rules reproduce the official values, but the repository does not yet demonstrate, in an automated way, that the classification covers 100% of the base and that the criteria are mutually exclusive. Matching the official figure is strong evidence of computational correctness; it is not, by itself, proof that each classificatory premise is the only possible reading of the MDF. Auditing the rules — not merely the numbers — is the next step, and it is the kind of discussion this repository exists to enable.
@@ -200,7 +209,7 @@ relatorios-fiscais-lrf/
 Requires R (≥ 4.1) and [Quarto](https://quarto.org).
 
 ```r
-install.packages(c("dplyr", "stringr", "readr", "readxl", "tidyr", "knitr"))
+install.packages(c("dplyr", "stringr", "tidyr", "readxl", "knitr"))
 ```
 
 **One statement:**
