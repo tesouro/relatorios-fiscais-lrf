@@ -1,5 +1,7 @@
 # Relatórios Fiscais da União a partir de Dados Públicos
 
+**Português** | [English](README.en.md)
+
 Este repositório mostra, com código aberto, que é possível **reproduzir números oficiais das contas públicas federais usando apenas dados públicos** — sem acesso a sistemas internos do governo.
 
 Não é uma proposta teórica: os números abaixo coincidem com o que a União publica oficialmente, na unidade em que os valores são divulgados (R$ mil).
@@ -27,9 +29,23 @@ isso importa.
 
 Não identificamos, no levantamento realizado, iniciativa governamental — no Brasil ou no exterior — que publique em conjunto os dados, o código e a conferência capazes de reproduzir seus próprios demonstrativos fiscais oficiais. Se houver, temos interesse em conhecer.
 
-Existem iniciativas próximas, com propósitos distintos. Pacotes do ecossistema R brasileiro — `tesouror`, `siconfir`, `RREORGFdataR` — dão acesso ágil às APIs do SICONFI e entregam o demonstrativo **já consolidado, na linha do anexo, como o ente o declarou**. São excelentes para análise comparativa entre entes, mas partem do resultado: a regra que transformou a execução naquele número permanece fora do alcance de quem consulta. Portais de dados abertos fazem o inverso — publicam a execução, sem a lógica que a converte em demonstrativo. Ferramentas de "regras como código", como o [OpenFisca](https://openfisca.org), codificam a *legislação* para *simular* políticas, não para reproduzir demonstrativos a partir da execução real.
+Existem iniciativas próximas, com propósitos distintos. Vale explicitar como cada uma se distingue, porque todas são instrutivas em si mesmas.
 
-O recorte deste projeto é o trecho que falta entre os dois: partir do dado público de execução e chegar, com código aberto e auditável, exatamente ao número que o Tesouro publicou.
+**Regras como código: Catala e OpenFisca.** O [Catala](https://catala-lang.org), desenvolvido no Inria (França), é o parente mais próximo do *método* adotado aqui. É uma linguagem específica de domínio concebida para *literate programming* legislativo: cada parágrafo do texto normativo é anotado com o código que o formaliza, e o compilador extrai tanto o programa executável quanto um documento legível por juristas. Foi desenhado em colaboração com professores de direito, incorpora a *lógica default* — a estrutura de "definição sob condições" que atravessa a redação legislativa — como recurso de primeira classe, e parte de seu compilador foi formalmente verificada. Nasceu de trabalho com a DGFiP, a administração tributária francesa, sobre o motor de cálculo do imposto de renda; a formalização das prestações familiares francesas em Catala revelou um erro na implementação oficial.
+
+O Catala é um instrumento bem mais rigoroso do que o que usamos aqui — Quarto não é compilador verificado e R não é uma linguagem jurídica. Mas a premissa é a mesma, e vale enunciá-la: **a fidelidade entre regra e código deve ser legível pelo especialista do domínio, não aceita sob palavra de quem implementou.** A diferença está no objeto. O Catala formaliza o *texto normativo* para *calcular* um direito em um caso concreto; aqui se parte da *execução orçamentária realizada* para reconstruir um *demonstrativo agregado já publicado*. O [OpenFisca](https://openfisca.org), também de origem francesa e hoje usado em vários continentes, está no mesmo eixo: codifica a *legislação* para *simular* políticas, não para reproduzir demonstrativos a partir da execução real.
+
+**Reproducible Analytical Pipelines (Reino Unido).** É o parente mais próximo do ponto de vista *operacional*. Criado em 2017 pelo Department for Culture, Media and Sport com o Government Digital Service e depois difundido pelo Government Statistical Service, o RAP respondeu a um problema que reconhecemos de imediato: estatísticas oficiais produzidas por processos manuais lentos e propensos a erro, com forte dependência de planilhas e software proprietário. Seu padrão mínimo — nenhuma etapa de copiar e colar, linguagens de código aberto, controle de versão, código publicado sempre que possível, documentação embutida, garantia de qualidade escrita no próprio código, revisão por pares — é o padrão que este repositório procurou atender.
+
+A diferença de escopo merece precisão, porque é estreita. O RAP trata de como o produtor constrói *o próprio* pipeline de forma reprodutível, e diversas estatísticas britânicas já publicam o código desse pipeline. O que se acrescenta aqui é a segunda metade: uma **reconstrução independente, a partir de dado público de terceiro, conferida linha a linha contra o número que o governo publicou**. O leitor verifica o resultado sem precisar confiar nem em quem escreveu o código, nem na instituição que produz o demonstrativo.
+
+A experiência britânica também ensina sobre o que *não* funciona: a revisão de 2021 do Office for Statistics Regulation trata sobretudo de barreiras de adoção, não de tecnologia.
+
+**Reprodutibilidade na estatística pública (França).** O INSEE investiu na mesma direção pelo lado estatístico: o [utilitR](https://www.utilitr.org), documentação colaborativa de R escrita por e para estatísticos públicos, e o [SSP Cloud](https://www.sspcloud.fr), plataforma aberta em contêineres pensada para que o trabalho estatístico possa ser reexecutado, e não apenas documentado.
+
+**Pacotes de acesso a dados (Brasil).** Pacotes do ecossistema R brasileiro — `tesouror`, `siconfir`, `RREORGFdataR` — dão acesso ágil às APIs do SICONFI e entregam o demonstrativo **já consolidado, na linha do anexo, como o ente o declarou**. São excelentes para análise comparativa entre entes, mas partem do resultado: a regra que transformou a execução naquele número permanece fora do alcance de quem consulta. Portais de dados abertos fazem o inverso — publicam a execução, sem a lógica que a converte em demonstrativo.
+
+**O recorte deste projeto** é o trecho que falta entre os dois: partir do dado público de execução e chegar, com código aberto e auditável, exatamente ao número que o Tesouro publicou.
 
 **E o que está aqui é uma amostra.** Já existe um pipeline interno, em Microsoft Fabric, que gera todos os anexos do RREO e do RGF com essa mesma abordagem — cada notebook documentado e conferido contra o Diário Oficial. Os cinco demonstrativos abaixo são os que a base pública disponível hoje permite reproduzir; o restante já está construído, aguardando apenas dado público com a granularidade necessária.
 
@@ -145,7 +161,8 @@ relatorios-fiscais-lrf/
 │   └── rgps/                      # bases próprias do RGPS (Siga Brasil + SOF)
 ├── docs/                          # versões em HTML, publicadas em tesouro.github.io/relatorios-fiscais-lrf
 ├── LICENSE
-└── README.md
+├── README.md                      # este documento (português)
+└── README.en.md                   # versão em inglês
 ```
 
 ---
@@ -186,6 +203,18 @@ mesmos arquivos estão na pasta [`docs/`](docs/), caso queira baixá-los.
 O projeto adota os princípios do **Literate Programming** (Knuth, 1984): cada demonstrativo descreve, em linguagem natural, os critérios normativos (Manual de Demonstrativos Fiscais da STN) e os implementa em código R verificável — a metodologia fica explícita, não apenas o resultado final.
 
 Os documentos **Quarto executáveis** (`.qmd`) são a expressão mais completa dessa ideia: juntam a explicação de cada critério e o código que o executa no mesmo arquivo, pensados para que alguém da área de contabilidade — mesmo sem experiência em programação — acompanhe cada passo. **Todos os cinco demonstrativos têm sua versão `.qmd` didática:** RGPS (`rreo_a04_rgps.qmd`), RCL (`rreo_a03_rcl.qmd`, com cada dedução da LRF explicada), Despesa com saúde (`rreo_a12_saude.qmd`), Despesa com pessoal (`rgf_a01_pessoal.qmd`, com as regras de inclusão/exclusão abertas uma a uma) e Pessoal por elemento (`rreo_t02_pessoal.qmd`, com a separação Civil × Militar explicada). Cada arquivo é autossuficiente: lê os dados, aplica os critérios, apresenta o resultado e o confere contra o valor publicado no Diário Oficial. Para gerar a versão em HTML: `quarto render <arquivo>.qmd`.
+
+## Referências
+
+- Merigoux, D., Chataing, N. & Protzenko, J. (2021). *Catala: A Programming Language for the Law.* Proc. ACM Program. Lang. 5, ICFP. <https://arxiv.org/abs/2103.03198>
+- Projeto Catala — <https://catala-lang.org> · manual de referência: <https://book.catala-lang.org>
+- Inria, *Catala translates law into code for more reliable administration* — <https://www.inria.fr/en/catala-software-dgfip-cnaf>
+- OpenFisca — <https://openfisca.org>
+- UK Government Analysis Function, *Reproducible Analytical Pipelines* — <https://analysisfunction.civilservice.gov.uk>
+- Office for Statistics Regulation (2021), *Reproducible Analytical Pipelines: Overcoming barriers to adoption* — <https://osr.statisticsauthority.gov.uk>
+- utilitR — <https://www.utilitr.org> · SSP Cloud — <https://www.sspcloud.fr>
+- Knuth, D. E. (1984). *Literate Programming.* The Computer Journal, 27(2), 97-111.
+- Brasil, Lei Complementar nº 101/2000 (LRF) e *Manual de Demonstrativos Fiscais* (STN)
 
 ## Licença
 
